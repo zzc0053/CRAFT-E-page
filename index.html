@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="title" content="CRAFT-E: A Neuro-Symbolic Framework for Embodied Affordance Grounding">
+  <meta name="description" content="CRAFT-E grounds natural-language action requests to functionally appropriate, visually present, and physically retrievable objects through an interpretable neuro-symbolic pipeline.">
+  <meta name="keywords" content="embodied AI, affordance grounding, neuro-symbolic AI, assistive robotics, knowledge graph, grasping, computer vision">
+  <meta name="author" content="Zhou Chen, Joe Lin, Carson Bulgin, Sathyanarayanan N. Aakur">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Auburn University">
+  <meta property="og:title" content="CRAFT-E: A Neuro-Symbolic Framework for Embodied Affordance Grounding">
+  <meta property="og:description" content="From an action request to a functionally appropriate and physically retrievable object—with an inspectable reasoning path.">
+  <meta property="og:url" content="https://zzc0053.github.io/CRAFT-E-page/">
+  <meta property="og:image" content="https://zzc0053.github.io/CRAFT-E-page/static/images/framework-overview.png">
+  <meta property="og:image:alt" content="CRAFT-E neuro-symbolic embodied affordance grounding pipeline">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="CRAFT-E: Neuro-Symbolic Embodied Affordance Grounding">
+  <meta name="twitter:description" content="Interpretable functional grounding from language to physical retrieval.">
+  <meta name="twitter:image" content="https://zzc0053.github.io/CRAFT-E-page/static/images/framework-overview.png">
+
+  <meta name="citation_title" content="CRAFT-E: A Neuro-Symbolic Framework for Embodied Affordance Grounding">
+  <meta name="citation_author" content="Chen, Zhou">
+  <meta name="citation_author" content="Lin, Joe">
+  <meta name="citation_author" content="Bulgin, Carson">
+  <meta name="citation_author" content="Aakur, Sathyanarayanan N.">
+  <meta name="citation_publication_date" content="2025">
+  <meta name="citation_pdf_url" content="https://arxiv.org/pdf/2512.04231">
+  <meta name="theme-color" content="#2563eb">
+
+  <title>CRAFT-E | Neuro-Symbolic Embodied Affordance Grounding</title>
+  <link rel="icon" type="image/svg+xml" href="static/images/favicon.svg">
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <link rel="stylesheet" href="static/css/craft-e.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "CRAFT-E: A Neuro-Symbolic Framework for Embodied Affordance Grounding",
+    "author": [
+      {"@type": "Person", "name": "Zhou Chen"},
+      {"@type": "Person", "name": "Joe Lin"},
+      {"@type": "Person", "name": "Carson Bulgin"},
+      {"@type": "Person", "name": "Sathyanarayanan N. Aakur"}
+    ],
+    "datePublished": "2025-12-03",
+    "url": "https://arxiv.org/abs/2512.04231",
+    "image": "https://zzc0053.github.io/CRAFT-E-page/static/images/framework-overview.png",
+    "keywords": ["embodied AI", "affordance grounding", "neuro-symbolic AI", "assistive robotics"],
+    "isAccessibleForFree": true
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <nav class="project-nav" aria-label="Project navigation">
+    <a class="project-mark" href="#top" aria-label="CRAFT-E home">CRAFT<span>-E</span></a>
+    <div class="project-nav-links">
+      <a href="#abstract">Abstract</a>
+      <a href="#method">Method</a>
+      <a href="#results">Results</a>
+      <a href="#videos">Videos</a>
+    </div>
+  </nav>
+
+  <button class="scroll-to-top" type="button" aria-label="Scroll to top" data-scroll-top>
+    <i class="fas fa-chevron-up" aria-hidden="true"></i>
+  </button>
+
+  <main id="main-content">
+    <section class="hero publication-header" id="top">
+      <div class="hero-body">
+        <div class="container is-max-desktop">
+          <div class="columns is-centered">
+            <div class="column has-text-centered">
+              <div class="paper-kicker">EMBODIED AI · NEURO-SYMBOLIC REASONING</div>
+              <h1 class="title is-1 publication-title">CRAFT-E: A Neuro-Symbolic Framework for Embodied Affordance Grounding</h1>
+
+              <div class="is-size-5 publication-authors">
+                <span class="author-block"><a href="https://github.com/zzc0053" target="_blank" rel="noreferrer">Zhou Chen</a>,</span>
+                <span class="author-block">Joe Lin,</span>
+                <span class="author-block">Carson Bulgin,</span>
+                <span class="author-block">Sathyanarayanan N. Aakur</span>
+              </div>
+
+              <div class="is-size-5 publication-authors publication-affiliation">
+                <span class="author-block">Auburn University · Department of Computer Science and Software Engineering</span>
+              </div>
+
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="https://arxiv.org/pdf/2512.04231" target="_blank" rel="noreferrer" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fas fa-file-pdf" aria-hidden="true"></i></span><span>Paper</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2512.04231" target="_blank" rel="noreferrer" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fas fa-book-open" aria-hidden="true"></i></span><span>arXiv</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://github.com/zzc0053/CRAFT-E" target="_blank" rel="noreferrer" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fab fa-github" aria-hidden="true"></i></span><span>Code</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="#videos" class="external-link button is-normal is-rounded is-light project-secondary-button">
+                    <span class="icon"><i class="fas fa-play" aria-hidden="true"></i></span><span>Videos</span>
+                  </a>
+                </span>
+              </div>
+
+              <div class="paper-tags" aria-label="Paper attributes">
+                <span>Training-free</span><span>Open-vocabulary</span><span>Interpretable</span><span>Embodied</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero teaser reasoning-section" aria-labelledby="reasoning-heading">
+      <div class="container is-max-desktop">
+        <div class="hero-body">
+          <div class="section-heading has-text-centered">
+            <p class="section-eyebrow">INTERACTIVE TEASER</p>
+            <h2 class="title is-3" id="reasoning-heading">From intent to an actionable object</h2>
+            <p class="section-lead">CRAFT-E exposes each step between a natural-language request and the object selected for retrieval.</p>
+          </div>
+
+          <div class="reasoning-demo" data-demo>
+            <div class="demo-toolbar">
+              <div><span class="demo-live"></span> CRAFT-E / REASONING TRACE</div>
+              <button type="button" data-replay><i class="fas fa-redo" aria-hidden="true"></i> Replay</button>
+            </div>
+            <div class="query-row">
+              <span>USER QUERY</span>
+              <strong>“Give me something to cut with.”</strong>
+            </div>
+
+            <div class="demo-grid" data-stage="0">
+              <div class="scene-panel">
+                <div class="panel-label"><span>RGB-D SCENE / 0072</span><span data-stage-label>Parsing query</span></div>
+                <div class="scene-frame">
+                  <img src="static/images/cut-scene.jpg" alt="Tabletop scene containing scissors, a dry eraser, and a tie">
+                  <div class="scan-line" aria-hidden="true"></div>
+                  <div class="roi roi-scissors" data-roi><span>scissors</span></div>
+                  <div class="roi roi-eraser" data-roi><span>dry eraser</span></div>
+                  <div class="roi roi-tie" data-roi><span>tie</span></div>
+                </div>
+              </div>
+
+              <div class="reasoning-panel">
+                <div class="reasoning-step properties-step">
+                  <div class="step-head"><span>01 · VERB → PROPERTIES</span><b>knowledge graph</b></div>
+                  <div class="verb-chip">cut</div>
+                  <div class="property-list" aria-label="Properties associated with cutting">
+                    <span>sharp <b>.90</b></span>
+                    <span>blade <b>.90</b></span>
+                    <span>metallic <b>.80</b></span>
+                    <span>hinged <b>.90</b></span>
+                    <span>handle <b>.80</b></span>
+                  </div>
+                </div>
+
+                <div class="reasoning-step energy-step">
+                  <div class="step-head"><span>02 · ENERGY FUSION</span><b>lower is better</b></div>
+                  <div class="energy-columns"><span>candidate</span><span>aff.</span><span>align.</span><span>grasp</span></div>
+                  <div class="candidate-row is-winner">
+                    <strong>scissors</strong><i style="--score:16%"></i><i style="--score:22%"></i><i style="--score:12%"></i>
+                  </div>
+                  <div class="candidate-row">
+                    <strong>dry eraser</strong><i style="--score:78%"></i><i style="--score:62%"></i><i style="--score:18%"></i>
+                  </div>
+                  <div class="candidate-row">
+                    <strong>tie</strong><i style="--score:85%"></i><i style="--score:70%"></i><i style="--score:48%"></i>
+                  </div>
+                </div>
+
+                <div class="decision-row">
+                  <span>SELECTED OBJECT</span><strong>scissors</strong><small>graspable · aligned · functional</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="teaser-caption has-text-centered">Language → symbolic properties → scene candidates → grasp-aware selection.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section hero is-light" id="abstract">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Abstract</h2>
+            <div class="content has-text-justified abstract-copy">
+              <p>
+                Assistive robots operating in unstructured environments must understand not only what objects are, but what they can be used for. This requires grounding language-based action queries to objects that both afford the requested function and can be physically retrieved. Existing approaches often rely on black-box models or fixed affordance labels, limiting transparency, controllability, and reliability for human-facing applications.
+              </p>
+              <p>
+                We introduce <strong>CRAFT-E</strong>, a modular neuro-symbolic framework that composes a structured verb–property–object knowledge graph with visual-language alignment and energy-based grasp reasoning. The system generates interpretable grounding paths that expose the factors influencing object selection and incorporates grasp feasibility as an integral part of affordance inference.
+              </p>
+              <p>
+                We further construct a benchmark dataset with unified annotations for verb-object compatibility, segmentation, and grasp candidates, and deploy the full pipeline on a physical robot. By coupling symbolic reasoning with embodied perception, CRAFT-E offers an interpretable and customizable alternative to end-to-end models for affordance-grounded object selection.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section method-section" id="method">
+      <div class="container is-max-desktop">
+        <div class="section-heading has-text-centered">
+          <p class="section-eyebrow">METHOD</p>
+          <h2 class="title is-3">A modular path from language to action</h2>
+          <p class="section-lead">Each representation can be inspected, adjusted, or replaced without retraining an end-to-end policy.</p>
+        </div>
+
+        <div class="columns is-multiline pipeline-columns">
+          <div class="column is-half-tablet is-one-quarter-desktop">
+            <article class="pipeline-card"><span>01</span><i class="fas fa-crosshairs" aria-hidden="true"></i><h3>Sense</h3><p>GraspNet or GraspKpNet proposes 6-DoF grasps. SAMv2 converts grasp locations into class-agnostic regions.</p><small>GRASP + ROI</small></article>
+          </div>
+          <div class="column is-half-tablet is-one-quarter-desktop">
+            <article class="pipeline-card"><span>02</span><i class="fas fa-project-diagram" aria-hidden="true"></i><h3>Reason</h3><p>An offline affordance graph expands a verb into properties and links those properties to candidate objects.</p><small>v → p → o</small></article>
+          </div>
+          <div class="column is-half-tablet is-one-quarter-desktop">
+            <article class="pipeline-card"><span>03</span><i class="fas fa-object-group" aria-hidden="true"></i><h3>Ground</h3><p>CLIP aligns every candidate region with the functional query without requiring a fixed category label.</p><small>ROI + CLIP</small></article>
+          </div>
+          <div class="column is-half-tablet is-one-quarter-desktop">
+            <article class="pipeline-card"><span>04</span><i class="fas fa-robot" aria-hidden="true"></i><h3>Act</h3><p>Affordance, alignment, and grasp energies are fused; the lowest-energy candidate is retrieved.</p><small>MIN E<sub>TOTAL</sub></small></article>
+          </div>
+        </div>
+
+        <div class="energy-equation" aria-label="CRAFT-E energy formulation">
+          <div><span>ENERGY FORMULATION</span><strong>E(v, r<sub>i</sub>)</strong></div>
+          <p>αE<sub>grasp</sub>(G<sub>i</sub>) <b>+</b> βE<sub>aff</sub>(v, o<sub>rᵢ</sub>) <b>+</b> γE<sub>align</sub>(b<sub>i</sub>, v)</p>
+          <small>physical feasibility + functional plausibility + visual evidence</small>
+        </div>
+
+        <figure class="paper-figure">
+          <img src="static/images/framework-overview.png" alt="CRAFT-E overview from input scene and verb query through grasp prediction, symbolic affordance reasoning, visual alignment, selection, and robot actuation" loading="lazy">
+          <figcaption><strong>System overview.</strong> CRAFT-E makes the structured route from language to perception to action visible rather than hiding the decision in a monolithic model.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section hero is-light graph-section">
+      <div class="container is-max-desktop">
+        <div class="columns is-vcentered is-variable is-7">
+          <div class="column is-5">
+            <p class="section-eyebrow">WHY A KNOWLEDGE GRAPH?</p>
+            <h2 class="title is-3 left-title">Reason about functions, not only labels</h2>
+            <p class="graph-lead">“Cut” is not an object category. It is a bundle of useful properties—sharp, bladed, metallic, hinged, and handled—that can be connected to objects present in a new scene.</p>
+            <ul class="graph-benefits">
+              <li><i class="fas fa-route" aria-hidden="true"></i><div><strong>Interpretable</strong><span>Inspect the verb → property → object path behind a decision.</span></div></li>
+              <li><i class="fas fa-sliders-h" aria-hidden="true"></i><div><strong>Editable</strong><span>Adjust a node, edge, or prior without retraining the full system.</span></div></li>
+              <li><i class="fas fa-bolt" aria-hidden="true"></i><div><strong>Efficient at inference</strong><span>Associations are built offline; no LLM call is required at run time.</span></div></li>
+            </ul>
+          </div>
+          <div class="column is-7">
+            <figure class="paper-figure graph-figure">
+              <img src="static/images/affordance-graph.png" alt="Comparison of an LLM-derived affordance-centric graph and a ConceptNet-derived graph for cut and scissors" loading="lazy">
+              <figcaption>Property-mediated paths create a compact, task-focused explanation for functional fit.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section results-section" id="results">
+      <div class="container is-max-desktop">
+        <div class="section-heading has-text-centered">
+          <p class="section-eyebrow">EVALUATION</p>
+          <h2 class="title is-3">Static, robotic, and open-world grounding</h2>
+          <p class="section-lead">CRAFT-E is evaluated from controlled tabletop scenes to a physical 6-DoF robot and an ImageNet-derived functional retrieval benchmark.</p>
+        </div>
+
+        <div class="columns result-columns">
+          <div class="column">
+            <article class="result-card result-blue"><span>STATIC SCENES</span><strong>64.95<sup>%</sup></strong><p>Accuracy with perfect grasp and detection, compared with 62.89% for GPT-4o in the same setting.</p><i style="--result:64.95%"></i></article>
+          </div>
+          <div class="column">
+            <article class="result-card result-green"><span>PHYSICAL ROBOT</span><strong>46.67<sup>%</sup></strong><p>End-to-end grasp rate using the GraspNet pipeline across randomized real-world layouts.</p><i style="--result:46.67%"></i></article>
+          </div>
+          <div class="column">
+            <article class="result-card result-orange"><span>FUNCTIONAL RETRIEVAL</span><strong>48.30<sup>%</sup></strong><p>Top-1 accuracy on the ImageNet-derived benchmark among the compared training-free methods.</p><i style="--result:48.30%"></i></article>
+          </div>
+        </div>
+
+        <div class="benchmark-strip">
+          <div><strong>97</strong><span>RGB-D tabletop scenes</span></div>
+          <div><strong>20 / 39</strong><span>real-world verbs / objects</span></div>
+          <div><strong>216 / 54</strong><span>ImageNet categories / verbs</span></div>
+          <div><strong>0.62 s</strong><span>average inference per scene</span></div>
+        </div>
+        <p class="results-note">Metrics and settings are reported from the current arXiv manuscript. See the paper for complete protocols, baselines, and failure analysis.</p>
+      </div>
+    </section>
+
+    <section class="section hero is-light video-presentation" id="videos">
+      <div class="container is-max-desktop">
+        <div class="section-heading has-text-centered">
+          <p class="section-eyebrow">SUPPLEMENTARY VIDEO</p>
+          <h2 class="title is-3">CRAFT-E in action</h2>
+          <p class="section-lead">The full overview covers the problem setting, modular pipeline, benchmark protocol, and real-world robot trials.</p>
+        </div>
+        <div class="main-video-shell">
+          <video controls playsinline preload="metadata" poster="static/images/supplementary-overview.webp" aria-label="CRAFT-E full supplementary video">
+            <source src="static/videos/supplementary-overview.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <section class="section qualitative-section">
+      <div class="container is-max-desktop">
+        <div class="gallery-heading">
+          <div><p class="section-eyebrow">QUALITATIVE TRIALS</p><h2 class="title is-3 left-title">Functional intent to physical retrieval</h2></div>
+          <div class="filter-buttons" role="group" aria-label="Filter videos by grasp backbone">
+            <button class="is-active" type="button" data-filter="all">All</button>
+            <button type="button" data-filter="graspnet">GraspNet</button>
+            <button type="button" data-filter="graspkpnet">GraspKpNet</button>
+          </div>
+        </div>
+
+        <div class="video-grid">
+          <article class="video-card" data-backbone="graspnet"><video controls playsinline muted preload="none" poster="static/images/graspnet-rotate-screwdriver.webp"><source src="static/videos/graspnet-rotate-screwdriver.mp4" type="video/mp4"></video><div><span>GraspNet</span><h3>Rotate → screwdriver</h3></div></article>
+          <article class="video-card" data-backbone="graspnet"><video controls playsinline muted preload="none" poster="static/images/graspnet-wear-goggles.webp"><source src="static/videos/graspnet-wear-goggles.mp4" type="video/mp4"></video><div><span>GraspNet</span><h3>Wear → goggles</h3></div></article>
+          <article class="video-card" data-backbone="graspnet"><video controls playsinline muted preload="none" poster="static/images/graspnet-install-drill.webp"><source src="static/videos/graspnet-install-drill.mp4" type="video/mp4"></video><div><span>GraspNet</span><h3>Install → drill</h3></div></article>
+          <article class="video-card" data-backbone="graspnet"><video controls playsinline muted preload="none" poster="static/images/graspnet-transfer-pot.webp"><source src="static/videos/graspnet-transfer-pot.mp4" type="video/mp4"></video><div><span>GraspNet</span><h3>Transfer → pot</h3></div></article>
+          <article class="video-card" data-backbone="graspkpnet"><video controls playsinline muted preload="none" poster="static/images/graspkpnet-feed-eggplant.webp"><source src="static/videos/graspkpnet-feed-eggplant.mp4" type="video/mp4"></video><div><span>GraspKpNet</span><h3>Feed → eggplant</h3></div></article>
+          <article class="video-card" data-backbone="graspkpnet"><video controls playsinline muted preload="none" poster="static/images/graspkpnet-play-toy-car.webp"><source src="static/videos/graspkpnet-play-toy-car.mp4" type="video/mp4"></video><div><span>GraspKpNet</span><h3>Play → toy car</h3></div></article>
+          <article class="video-card" data-backbone="graspkpnet"><video controls playsinline muted preload="none" poster="static/images/graspkpnet-grow-corn.webp"><source src="static/videos/graspkpnet-grow-corn.mp4" type="video/mp4"></video><div><span>GraspKpNet</span><h3>Grow → corn</h3></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section hero is-light resources-section" id="resources">
+      <div class="container is-max-desktop">
+        <div class="section-heading has-text-centered">
+          <p class="section-eyebrow">RESOURCES</p>
+          <h2 class="title is-3">Explore the project</h2>
+        </div>
+        <div class="columns resource-columns">
+          <div class="column"><a class="resource-card" href="https://arxiv.org/abs/2512.04231" target="_blank" rel="noreferrer"><i class="fas fa-file-alt" aria-hidden="true"></i><strong>Paper</strong><span>Method, experiments, ablations, and analysis.</span><small>Open arXiv ↗</small></a></div>
+          <div class="column"><a class="resource-card" href="https://github.com/zzc0053/CRAFT-E" target="_blank" rel="noreferrer"><i class="fab fa-github" aria-hidden="true"></i><strong>Code</strong><span>Evaluation pipelines, robot integration, and annotations.</span><small>Browse repository ↗</small></a></div>
+          <div class="column"><a class="resource-card" href="https://github.com/zzc0053/CRAFT-E/tree/main/Knowledge%20Graph" target="_blank" rel="noreferrer"><i class="fas fa-project-diagram" aria-hidden="true"></i><strong>Knowledge Graph</strong><span>Verb–property and property–object associations.</span><small>Inspect graph data ↗</small></a></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="BibTeX">
+      <div class="container is-max-desktop content">
+        <div class="bibtex-header">
+          <h2 class="title">BibTeX</h2>
+          <button class="copy-bibtex-btn" type="button" data-copy-bibtex title="Copy BibTeX to clipboard"><i class="fas fa-copy" aria-hidden="true"></i><span>Copy</span></button>
+        </div>
+        <pre id="bibtex-code"><code>@article{chen2025crafte,
+  title   = {CRAFT-E: A Neuro-Symbolic Framework for Embodied Affordance Grounding},
+  author  = {Chen, Zhou and Lin, Joe and Bulgin, Carson and Aakur, Sathyanarayanan N.},
+  journal = {arXiv preprint arXiv:2512.04231},
+  year    = {2025}
+}</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8 has-text-centered">
+          <p><strong>CRAFT-E</strong> · Interpretable functional grounding for embodied assistance.</p>
+          <p>Built with the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank" rel="noreferrer">Academic Project Page Template</a>, adopted from the <a href="https://nerfies.github.io" target="_blank" rel="noreferrer">Nerfies</a> project page.</p>
+          <p class="footer-small">Website content © CRAFT-E authors. Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noreferrer">CC BY-SA 4.0</a>.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/craft-e.js"></script>
+</body>
+</html>
