@@ -14,13 +14,13 @@
   <meta property="og:title" content="CRAFT-E: A Neuro-Symbolic Framework for Embodied Affordance Grounding">
   <meta property="og:description" content="From an action request to a functionally appropriate and physically retrievable object—with an inspectable reasoning path.">
   <meta property="og:url" content="https://zzc0053.github.io/CRAFT-E-page/">
-  <meta property="og:image" content="https://zzc0053.github.io/CRAFT-E-page/framework-overview.png">
+  <meta property="og:image" content="https://zzc0053.github.io/CRAFT-E-page/crafte-system-overview.png">
   <meta property="og:image:alt" content="CRAFT-E neuro-symbolic embodied affordance grounding pipeline">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="CRAFT-E: Neuro-Symbolic Embodied Affordance Grounding">
   <meta name="twitter:description" content="Interpretable functional grounding from language to physical retrieval.">
-  <meta name="twitter:image" content="https://zzc0053.github.io/CRAFT-E-page/framework-overview.png">
+  <meta name="twitter:image" content="https://zzc0053.github.io/CRAFT-E-page/crafte-system-overview.png">
 
   <meta name="citation_title" content="CRAFT-E: A Neuro-Symbolic Framework for Embodied Affordance Grounding">
   <meta name="citation_author" content="Chen, Zhou">
@@ -54,7 +54,7 @@
     ],
     "datePublished": "2025-12-03",
     "url": "https://arxiv.org/abs/2512.04231",
-    "image": "https://zzc0053.github.io/CRAFT-E-page/framework-overview.png",
+    "image": "https://zzc0053.github.io/CRAFT-E-page/crafte-system-overview.png",
     "keywords": ["embodied AI", "affordance grounding", "neuro-symbolic AI", "assistive robotics"],
     "isAccessibleForFree": true
   }
@@ -66,6 +66,7 @@
   <nav class="project-nav" aria-label="Project navigation">
     <a class="project-mark" href="#top" aria-label="CRAFT-E home">CRAFT<span>-E</span></a>
     <div class="project-nav-links">
+      <a href="#overview">Overview</a>
       <a href="#abstract">Abstract</a>
       <a href="#method">Method</a>
       <a href="#results">Results</a>
@@ -87,7 +88,7 @@
               <h1 class="title is-1 publication-title">CRAFT-E: A Neuro-Symbolic Framework for Embodied Affordance Grounding</h1>
 
               <div class="is-size-5 publication-authors">
-                <span class="author-block"><a href="https://github.com/zzc0053" target="_blank" rel="noreferrer">Zhou Chen</a>,</span>
+                <span class="author-block"><a href="https://zzc0053.github.io/" target="_blank" rel="noreferrer">Zhou Chen</a>,</span>
                 <span class="author-block">Joe Lin,</span>
                 <span class="author-block">Carson Bulgin,</span>
                 <span class="author-block">Sathyanarayanan N. Aakur</span>
@@ -129,6 +130,42 @@
       </div>
     </section>
 
+    <section class="section system-overview-section" id="overview">
+      <div class="container is-widescreen">
+        <div class="section-heading has-text-centered">
+          <p class="section-eyebrow">SYSTEM OVERVIEW</p>
+          <h2 class="title is-3">From an open-ended request to robot action</h2>
+          <p class="section-lead">CRAFT-E connects grasp prediction, an affordance-centric knowledge base, and vision-language grounding in one inspectable pipeline.</p>
+        </div>
+        <figure class="paper-figure overview-figure">
+          <img src="crafte-system-overview.png" alt="Complete CRAFT-E architecture from an input scene and verb query through grasp prediction, ROI localization, affordance knowledge, visual-language grounding, object selection, and robot actuation">
+          <figcaption><strong>System overview.</strong> A verb-centered knowledge subgraph describes functional compatibility, while visual and grasp evidence ground the request to an actionable region in the current scene.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section abstract-section" id="abstract">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <p class="section-eyebrow">ABSTRACT</p>
+            <h2 class="title is-3">Interpretable affordance grounding for embodied assistance</h2>
+            <div class="content has-text-justified abstract-copy">
+              <p>
+                Assistive robots operating in unstructured environments must understand not only what objects are, but what they can be used for. This requires grounding language-based action queries to objects that both afford the requested function and can be physically retrieved. Existing approaches often rely on black-box models or fixed affordance labels, limiting transparency, controllability, and reliability for human-facing applications.
+              </p>
+              <p>
+                We introduce <strong>CRAFT-E</strong>, a modular neuro-symbolic framework that composes a structured verb–property–object knowledge graph with visual-language alignment and energy-based grasp reasoning. The system generates interpretable grounding paths that expose the factors influencing object selection and incorporates grasp feasibility as an integral part of affordance inference.
+              </p>
+              <p>
+                We further construct a benchmark dataset with unified annotations for verb-object compatibility, segmentation, and grasp candidates, and deploy the full pipeline on a physical robot. By coupling symbolic reasoning with embodied perception, CRAFT-E offers an interpretable and customizable alternative to end-to-end models for affordance-grounded object selection.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="hero teaser reasoning-section" aria-labelledby="reasoning-heading">
       <div class="container is-max-desktop">
         <div class="hero-body">
@@ -152,11 +189,11 @@
               <div class="scene-panel">
                 <div class="panel-label"><span>RGB-D SCENE / 0072</span><span data-stage-label>Parsing query</span></div>
                 <div class="scene-frame">
-                  <img src="cut-scene.jpg" alt="Tabletop scene containing scissors, a dry eraser, and a tie">
+                  <img src="cut-scene-v2.jpg" alt="Tabletop scene containing scissors, a binder clip, and a tape measure">
                   <div class="scan-line" aria-hidden="true"></div>
                   <div class="roi roi-scissors" data-roi><span>scissors</span></div>
-                  <div class="roi roi-eraser" data-roi><span>dry eraser</span></div>
-                  <div class="roi roi-tie" data-roi><span>tie</span></div>
+                  <div class="roi roi-eraser" data-roi><span>binder clip</span></div>
+                  <div class="roi roi-tie" data-roi><span>tape measure</span></div>
                 </div>
               </div>
 
@@ -174,16 +211,17 @@
                 </div>
 
                 <div class="reasoning-step energy-step">
-                  <div class="step-head"><span>02 · ENERGY FUSION</span><b>lower is better</b></div>
-                  <div class="energy-columns"><span>candidate</span><span>aff.</span><span>align.</span><span>grasp</span></div>
+                  <div class="step-head"><span>02 · CANDIDATE COST</span><b>best match = lowest cost</b></div>
+                  <p class="energy-explainer">Each bar is a penalty: shorter means stronger functional, visual, or grasp compatibility.</p>
+                  <div class="energy-columns"><span>candidate</span><span>function</span><span>visual</span><span>grasp</span></div>
                   <div class="candidate-row is-winner">
                     <strong>scissors</strong><i style="--score:16%"></i><i style="--score:22%"></i><i style="--score:12%"></i>
                   </div>
                   <div class="candidate-row">
-                    <strong>dry eraser</strong><i style="--score:78%"></i><i style="--score:62%"></i><i style="--score:18%"></i>
+                    <strong>binder clip</strong><i style="--score:78%"></i><i style="--score:62%"></i><i style="--score:18%"></i>
                   </div>
                   <div class="candidate-row">
-                    <strong>tie</strong><i style="--score:85%"></i><i style="--score:70%"></i><i style="--score:48%"></i>
+                    <strong>tape measure</strong><i style="--score:85%"></i><i style="--score:70%"></i><i style="--score:48%"></i>
                   </div>
                 </div>
 
@@ -194,27 +232,6 @@
             </div>
           </div>
           <p class="teaser-caption has-text-centered">Language → symbolic properties → scene candidates → grasp-aware selection.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section hero is-light" id="abstract">
-      <div class="container is-max-desktop">
-        <div class="columns is-centered has-text-centered">
-          <div class="column is-four-fifths">
-            <h2 class="title is-3">Abstract</h2>
-            <div class="content has-text-justified abstract-copy">
-              <p>
-                Assistive robots operating in unstructured environments must understand not only what objects are, but what they can be used for. This requires grounding language-based action queries to objects that both afford the requested function and can be physically retrieved. Existing approaches often rely on black-box models or fixed affordance labels, limiting transparency, controllability, and reliability for human-facing applications.
-              </p>
-              <p>
-                We introduce <strong>CRAFT-E</strong>, a modular neuro-symbolic framework that composes a structured verb–property–object knowledge graph with visual-language alignment and energy-based grasp reasoning. The system generates interpretable grounding paths that expose the factors influencing object selection and incorporates grasp feasibility as an integral part of affordance inference.
-              </p>
-              <p>
-                We further construct a benchmark dataset with unified annotations for verb-object compatibility, segmentation, and grasp candidates, and deploy the full pipeline on a physical robot. By coupling symbolic reasoning with embodied perception, CRAFT-E offers an interpretable and customizable alternative to end-to-end models for affordance-grounded object selection.
-              </p>
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -238,20 +255,16 @@
             <article class="pipeline-card"><span>03</span><i class="fas fa-object-group" aria-hidden="true"></i><h3>Ground</h3><p>CLIP aligns every candidate region with the functional query without requiring a fixed category label.</p><small>ROI + CLIP</small></article>
           </div>
           <div class="column is-half-tablet is-one-quarter-desktop">
-            <article class="pipeline-card"><span>04</span><i class="fas fa-robot" aria-hidden="true"></i><h3>Act</h3><p>Affordance, alignment, and grasp energies are fused; the lowest-energy candidate is retrieved.</p><small>MIN E<sub>TOTAL</sub></small></article>
+            <article class="pipeline-card"><span>04</span><i class="fas fa-robot" aria-hidden="true"></i><h3>Act</h3><p>Functional, visual, and grasp penalties are fused into a compatibility cost; the best overall match is retrieved.</p><small>MIN COST</small></article>
           </div>
         </div>
 
         <div class="energy-equation" aria-label="CRAFT-E energy formulation">
           <div><span>ENERGY FORMULATION</span><strong>E(v, r<sub>i</sub>)</strong></div>
           <p>αE<sub>grasp</sub>(G<sub>i</sub>) <b>+</b> βE<sub>aff</sub>(v, o<sub>rᵢ</sub>) <b>+</b> γE<sub>align</sub>(b<sub>i</sub>, v)</p>
-          <small>physical feasibility + functional plausibility + visual evidence</small>
+          <small>Energy is a cost, not a confidence score: fewer penalties mean a better match.</small>
         </div>
 
-        <figure class="paper-figure">
-          <img src="framework-overview.png" alt="CRAFT-E overview from input scene and verb query through grasp prediction, symbolic affordance reasoning, visual alignment, selection, and robot actuation" loading="lazy">
-          <figcaption><strong>System overview.</strong> CRAFT-E makes the structured route from language to perception to action visible rather than hiding the decision in a monolithic model.</figcaption>
-        </figure>
       </div>
     </section>
 
@@ -270,7 +283,7 @@
           </div>
           <div class="column is-7">
             <figure class="paper-figure graph-figure">
-              <img src="affordance-graph.png" alt="Comparison of an LLM-derived affordance-centric graph and a ConceptNet-derived graph for cut and scissors" loading="lazy">
+              <img src="crafte-knowledge-graph.png" alt="Complete comparison of an LLM-derived affordance-centric graph and a ConceptNet-derived graph for cut and scissors" loading="lazy">
               <figcaption>Property-mediated paths create a compact, task-focused explanation for functional fit.</figcaption>
             </figure>
           </div>
