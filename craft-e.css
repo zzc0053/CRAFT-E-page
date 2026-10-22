@@ -692,7 +692,7 @@ body {
 }
 
 .overview-figure {
-  max-width: 1220px;
+  width: min(100%, 900px);
   margin-right: auto;
   margin-left: auto;
 }
