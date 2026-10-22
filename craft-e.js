@@ -23,11 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       name: 'Scene 1',
       image: 'cut-scene-v2.jpg',
-      alt: 'Tabletop scene with scissors, a binder clip, and a tape measure',
+      alt: 'Tabletop scene with scissors, a destapler, and a tape measure',
       objects: [
-        { name: 'scissors', box: [47.1, 38.8, 22.7, 17.3] },
-        { name: 'binder clip', box: [38.2, 49.3, 9.8, 11.5] },
-        { name: 'tape measure', box: [53, 53.5, 14.5, 19.5] }
+        { name: 'scissors', box: [49.4, 38.7, 20.4, 12.7] },
+        { name: 'destapler', box: [37.6, 51.8, 8.6, 9.4], label: 'below' },
+        { name: 'tape measure', box: [52.2, 57, 12.5, 16.6], label: 'below' }
       ],
       queries: [
         {
@@ -35,22 +35,22 @@ document.addEventListener('DOMContentLoaded', () => {
           properties: [['sharp', '.90'], ['blade', '.90'], ['hinged', '.88'], ['handle', '.82']],
           paths: [
             ['scissors', ['sharp', 'blade', 'hinged'], '.92'],
-            ['binder clip', ['metallic', 'hinged'], '.38'],
+            ['destapler', ['metallic', 'levered'], '.38'],
             ['tape measure', ['edged', 'handled'], '.24']
           ],
-          costs: [['scissors', 16, 22, 12], ['binder clip', 78, 62, 18], ['tape measure', 85, 70, 48]],
+          costs: [['scissors', 16, 22, 12], ['destapler', 78, 62, 18], ['tape measure', 85, 70, 48]],
           note: 'sharp · aligned · graspable'
         },
         {
-          text: 'Give me something to fasten papers with.', verb: 'fasten', selected: 'binder clip',
-          properties: [['clamping', '.91'], ['spring-loaded', '.86'], ['compact', '.78'], ['metallic', '.72']],
+          text: 'Give me something to remove a staple with.', verb: 'destaple', selected: 'destapler',
+          properties: [['prying', '.92'], ['wedge-tip', '.88'], ['levered', '.84'], ['compact', '.78']],
           paths: [
-            ['binder clip', ['clamping', 'spring-loaded', 'compact'], '.94'],
+            ['destapler', ['prying', 'wedge-tip', 'levered'], '.95'],
             ['scissors', ['hinged', 'metallic'], '.31'],
             ['tape measure', ['compact'], '.18']
           ],
-          costs: [['binder clip', 12, 18, 10], ['scissors', 69, 36, 20], ['tape measure', 82, 48, 42]],
-          note: 'clamping · localized · graspable'
+          costs: [['destapler', 10, 17, 12], ['scissors', 69, 36, 20], ['tape measure', 82, 48, 42]],
+          note: 'prying · localized · graspable'
         },
         {
           text: 'Give me something to measure with.', verb: 'measure', selected: 'tape measure',
@@ -58,9 +58,9 @@ document.addEventListener('DOMContentLoaded', () => {
           paths: [
             ['tape measure', ['graduated', 'retractable', 'flexible'], '.96'],
             ['scissors', ['portable'], '.17'],
-            ['binder clip', ['compact'], '.12']
+            ['destapler', ['compact'], '.12']
           ],
-          costs: [['tape measure', 10, 17, 25], ['scissors', 88, 34, 15], ['binder clip', 91, 45, 12]],
+          costs: [['tape measure', 10, 17, 25], ['scissors', 88, 34, 15], ['destapler', 91, 45, 12]],
           note: 'graduated · aligned · retrievable'
         }
       ]
@@ -236,6 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
       roi.style.top = `${top}%`;
       roi.style.width = `${width}%`;
       roi.style.height = `${height}%`;
+      roi.classList.toggle('label-below', object.label === 'below');
       roi.classList.toggle('is-selected', object.name === query.selected);
       roi.querySelector('span').textContent = object.name;
     });

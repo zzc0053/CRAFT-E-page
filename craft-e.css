@@ -404,6 +404,10 @@ body {
   white-space: nowrap;
 }
 
+.roi.label-below span {
+  top: calc(100% + 3px);
+}
+
 .reasoning-panel {
   display: flex;
   flex-direction: column;
