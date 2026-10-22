@@ -14,13 +14,13 @@
   <meta property="og:title" content="CRAFT-E: A Neuro-Symbolic Framework for Embodied Affordance Grounding">
   <meta property="og:description" content="From an action request to a functionally appropriate and physically retrievable object—with an inspectable reasoning path.">
   <meta property="og:url" content="https://zzc0053.github.io/CRAFT-E-page/">
-  <meta property="og:image" content="https://zzc0053.github.io/CRAFT-E-page/static/images/framework-overview.png">
+  <meta property="og:image" content="https://zzc0053.github.io/CRAFT-E-page/framework-overview.png">
   <meta property="og:image:alt" content="CRAFT-E neuro-symbolic embodied affordance grounding pipeline">
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="CRAFT-E: Neuro-Symbolic Embodied Affordance Grounding">
   <meta name="twitter:description" content="Interpretable functional grounding from language to physical retrieval.">
-  <meta name="twitter:image" content="https://zzc0053.github.io/CRAFT-E-page/static/images/framework-overview.png">
+  <meta name="twitter:image" content="https://zzc0053.github.io/CRAFT-E-page/framework-overview.png">
 
   <meta name="citation_title" content="CRAFT-E: A Neuro-Symbolic Framework for Embodied Affordance Grounding">
   <meta name="citation_author" content="Chen, Zhou">
@@ -32,11 +32,11 @@
   <meta name="theme-color" content="#2563eb">
 
   <title>CRAFT-E | Neuro-Symbolic Embodied Affordance Grounding</title>
-  <link rel="icon" type="image/svg+xml" href="static/images/favicon.svg">
-  <link rel="stylesheet" href="static/css/bulma.min.css">
-  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
-  <link rel="stylesheet" href="static/css/index.css">
-  <link rel="stylesheet" href="static/css/craft-e.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="bulma.min.css">
+  <link rel="stylesheet" href="fontawesome.all.min.css">
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="craft-e.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -54,7 +54,7 @@
     ],
     "datePublished": "2025-12-03",
     "url": "https://arxiv.org/abs/2512.04231",
-    "image": "https://zzc0053.github.io/CRAFT-E-page/static/images/framework-overview.png",
+    "image": "https://zzc0053.github.io/CRAFT-E-page/framework-overview.png",
     "keywords": ["embodied AI", "affordance grounding", "neuro-symbolic AI", "assistive robotics"],
     "isAccessibleForFree": true
   }
@@ -152,7 +152,7 @@
               <div class="scene-panel">
                 <div class="panel-label"><span>RGB-D SCENE / 0072</span><span data-stage-label>Parsing query</span></div>
                 <div class="scene-frame">
-                  <img src="static/images/cut-scene.jpg" alt="Tabletop scene containing scissors, a dry eraser, and a tie">
+                  <img src="cut-scene.jpg" alt="Tabletop scene containing scissors, a dry eraser, and a tie">
                   <div class="scan-line" aria-hidden="true"></div>
                   <div class="roi roi-scissors" data-roi><span>scissors</span></div>
                   <div class="roi roi-eraser" data-roi><span>dry eraser</span></div>
@@ -249,7 +249,7 @@
         </div>
 
         <figure class="paper-figure">
-          <img src="static/images/framework-overview.png" alt="CRAFT-E overview from input scene and verb query through grasp prediction, symbolic affordance reasoning, visual alignment, selection, and robot actuation" loading="lazy">
+          <img src="framework-overview.png" alt="CRAFT-E overview from input scene and verb query through grasp prediction, symbolic affordance reasoning, visual alignment, selection, and robot actuation" loading="lazy">
           <figcaption><strong>System overview.</strong> CRAFT-E makes the structured route from language to perception to action visible rather than hiding the decision in a monolithic model.</figcaption>
         </figure>
       </div>
@@ -270,7 +270,7 @@
           </div>
           <div class="column is-7">
             <figure class="paper-figure graph-figure">
-              <img src="static/images/affordance-graph.png" alt="Comparison of an LLM-derived affordance-centric graph and a ConceptNet-derived graph for cut and scissors" loading="lazy">
+              <img src="affordance-graph.png" alt="Comparison of an LLM-derived affordance-centric graph and a ConceptNet-derived graph for cut and scissors" loading="lazy">
               <figcaption>Property-mediated paths create a compact, task-focused explanation for functional fit.</figcaption>
             </figure>
           </div>
@@ -316,8 +316,8 @@
           <p class="section-lead">The full overview covers the problem setting, modular pipeline, benchmark protocol, and real-world robot trials.</p>
         </div>
         <div class="main-video-shell">
-          <video controls playsinline preload="metadata" poster="static/images/supplementary-overview.webp" aria-label="CRAFT-E full supplementary video">
-            <source src="static/videos/supplementary-overview.mp4" type="video/mp4">
+          <video controls playsinline preload="metadata" poster="supplementary-overview.webp" aria-label="CRAFT-E full supplementary video">
+            <source src="supplementary-overview.mp4" type="video/mp4">
           </video>
         </div>
       </div>
@@ -335,13 +335,13 @@
         </div>
 
         <div class="video-grid">
-          <article class="video-card" data-backbone="graspnet"><video controls playsinline muted preload="none" poster="static/images/graspnet-rotate-screwdriver.webp"><source src="static/videos/graspnet-rotate-screwdriver.mp4" type="video/mp4"></video><div><span>GraspNet</span><h3>Rotate → screwdriver</h3></div></article>
-          <article class="video-card" data-backbone="graspnet"><video controls playsinline muted preload="none" poster="static/images/graspnet-wear-goggles.webp"><source src="static/videos/graspnet-wear-goggles.mp4" type="video/mp4"></video><div><span>GraspNet</span><h3>Wear → goggles</h3></div></article>
-          <article class="video-card" data-backbone="graspnet"><video controls playsinline muted preload="none" poster="static/images/graspnet-install-drill.webp"><source src="static/videos/graspnet-install-drill.mp4" type="video/mp4"></video><div><span>GraspNet</span><h3>Install → drill</h3></div></article>
-          <article class="video-card" data-backbone="graspnet"><video controls playsinline muted preload="none" poster="static/images/graspnet-transfer-pot.webp"><source src="static/videos/graspnet-transfer-pot.mp4" type="video/mp4"></video><div><span>GraspNet</span><h3>Transfer → pot</h3></div></article>
-          <article class="video-card" data-backbone="graspkpnet"><video controls playsinline muted preload="none" poster="static/images/graspkpnet-feed-eggplant.webp"><source src="static/videos/graspkpnet-feed-eggplant.mp4" type="video/mp4"></video><div><span>GraspKpNet</span><h3>Feed → eggplant</h3></div></article>
-          <article class="video-card" data-backbone="graspkpnet"><video controls playsinline muted preload="none" poster="static/images/graspkpnet-play-toy-car.webp"><source src="static/videos/graspkpnet-play-toy-car.mp4" type="video/mp4"></video><div><span>GraspKpNet</span><h3>Play → toy car</h3></div></article>
-          <article class="video-card" data-backbone="graspkpnet"><video controls playsinline muted preload="none" poster="static/images/graspkpnet-grow-corn.webp"><source src="static/videos/graspkpnet-grow-corn.mp4" type="video/mp4"></video><div><span>GraspKpNet</span><h3>Grow → corn</h3></div></article>
+          <article class="video-card" data-backbone="graspnet"><video controls playsinline muted preload="none" poster="graspnet-rotate-screwdriver.webp"><source src="graspnet-rotate-screwdriver.mp4" type="video/mp4"></video><div><span>GraspNet</span><h3>Rotate → screwdriver</h3></div></article>
+          <article class="video-card" data-backbone="graspnet"><video controls playsinline muted preload="none" poster="graspnet-wear-goggles.webp"><source src="graspnet-wear-goggles.mp4" type="video/mp4"></video><div><span>GraspNet</span><h3>Wear → goggles</h3></div></article>
+          <article class="video-card" data-backbone="graspnet"><video controls playsinline muted preload="none" poster="graspnet-install-drill.webp"><source src="graspnet-install-drill.mp4" type="video/mp4"></video><div><span>GraspNet</span><h3>Install → drill</h3></div></article>
+          <article class="video-card" data-backbone="graspnet"><video controls playsinline muted preload="none" poster="graspnet-transfer-pot.webp"><source src="graspnet-transfer-pot.mp4" type="video/mp4"></video><div><span>GraspNet</span><h3>Transfer → pot</h3></div></article>
+          <article class="video-card" data-backbone="graspkpnet"><video controls playsinline muted preload="none" poster="graspkpnet-feed-eggplant.webp"><source src="graspkpnet-feed-eggplant.mp4" type="video/mp4"></video><div><span>GraspKpNet</span><h3>Feed → eggplant</h3></div></article>
+          <article class="video-card" data-backbone="graspkpnet"><video controls playsinline muted preload="none" poster="graspkpnet-play-toy-car.webp"><source src="graspkpnet-play-toy-car.mp4" type="video/mp4"></video><div><span>GraspKpNet</span><h3>Play → toy car</h3></div></article>
+          <article class="video-card" data-backbone="graspkpnet"><video controls playsinline muted preload="none" poster="graspkpnet-grow-corn.webp"><source src="graspkpnet-grow-corn.mp4" type="video/mp4"></video><div><span>GraspKpNet</span><h3>Grow → corn</h3></div></article>
         </div>
       </div>
     </section>
@@ -388,7 +388,7 @@
     </div>
   </footer>
 
-  <script defer src="static/js/fontawesome.all.min.js"></script>
-  <script defer src="static/js/craft-e.js"></script>
+  <script defer src="fontawesome.all.min.js"></script>
+  <script defer src="craft-e.js"></script>
 </body>
 </html>
