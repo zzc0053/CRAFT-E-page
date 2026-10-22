@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="bulma.min.css">
   <link rel="stylesheet" href="fontawesome.all.min.css">
   <link rel="stylesheet" href="index.css">
-  <link rel="stylesheet" href="craft-e.css?v=16c64c2">
+  <link rel="stylesheet" href="craft-e.css?v=adaptive4">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -155,10 +155,7 @@
                 Assistive robots operating in unstructured environments must understand not only what objects are, but what they can be used for. This requires grounding language-based action queries to objects that both afford the requested function and can be physically retrieved. Existing approaches often rely on black-box models or fixed affordance labels, limiting transparency, controllability, and reliability for human-facing applications.
               </p>
               <p>
-                We introduce <strong>CRAFT-E</strong>, a modular neuro-symbolic framework that composes a structured verb–property–object knowledge graph with visual-language alignment and energy-based grasp reasoning. The system generates interpretable grounding paths that expose the factors influencing object selection and incorporates grasp feasibility as an integral part of affordance inference.
-              </p>
-              <p>
-                We further construct a benchmark dataset with unified annotations for verb-object compatibility, segmentation, and grasp candidates, and deploy the full pipeline on a physical robot. By coupling symbolic reasoning with embodied perception, CRAFT-E offers an interpretable and customizable alternative to end-to-end models for affordance-grounded object selection.
+                We introduce <strong>CRAFT-E</strong>, a modular neuro-symbolic framework that combines a structured verb–property–object knowledge graph with visual-language alignment and energy-based grasp reasoning. Its interpretable grounding paths expose why an object is selected while treating grasp feasibility as part of affordance inference. We also contribute a benchmark with unified verb-object, segmentation, and grasp annotations, and validate the complete pipeline on a physical robot.
               </p>
             </div>
           </div>
@@ -171,67 +168,67 @@
         <div class="hero-body">
           <div class="section-heading has-text-centered">
             <p class="section-eyebrow">INTERACTIVE TEASER</p>
-            <h2 class="title is-3" id="reasoning-heading">From intent to an actionable object</h2>
-            <p class="section-lead">CRAFT-E exposes each step between a natural-language request and the object selected for retrieval.</p>
+            <h2 class="title is-3" id="reasoning-heading">Explore how intent becomes an object</h2>
+            <p class="section-lead">Switch scenes and queries to inspect the full verb → property → object path before grasp-aware grounding.</p>
           </div>
 
           <div class="reasoning-demo" data-demo>
             <div class="demo-toolbar">
-              <div><span class="demo-live"></span> CRAFT-E / REASONING TRACE</div>
+              <div><span class="demo-live"></span> CRAFT-E / INTERACTIVE REASONING TRACE</div>
               <button type="button" data-replay><i class="fas fa-redo" aria-hidden="true"></i> Replay</button>
             </div>
+            <div class="scene-switcher" aria-label="Choose a tabletop scene">
+              <span>SCENE</span>
+              <div class="scene-tabs" data-scene-tabs></div>
+            </div>
             <div class="query-row">
-              <span>USER QUERY</span>
-              <strong>“Give me something to cut with.”</strong>
+              <span>QUERY</span>
+              <div class="query-tabs" data-query-tabs></div>
             </div>
 
             <div class="demo-grid" data-stage="0">
               <div class="scene-panel">
-                <div class="panel-label"><span>RGB-D SCENE / 0072</span><span data-stage-label>Parsing query</span></div>
+                <div class="panel-label"><span data-scene-name>SCENE 1</span><span data-stage-label>Parsing query</span></div>
                 <div class="scene-frame">
-                  <img src="cut-scene-v2.jpg" alt="Tabletop scene containing scissors, a binder clip, and a tape measure">
+                  <img src="cut-scene-v2.jpg" alt="Tabletop scene" data-scene-image>
                   <div class="scan-line" aria-hidden="true"></div>
-                  <div class="roi roi-scissors" data-roi><span>scissors</span></div>
-                  <div class="roi roi-eraser" data-roi><span>binder clip</span></div>
-                  <div class="roi roi-tie" data-roi><span>tape measure</span></div>
+                  <div class="roi" data-roi><span></span></div>
+                  <div class="roi" data-roi><span></span></div>
+                  <div class="roi" data-roi><span></span></div>
                 </div>
+                <div class="scene-object-strip" data-scene-objects aria-label="Objects detected in the scene"></div>
               </div>
 
               <div class="reasoning-panel">
                 <div class="reasoning-step properties-step">
-                  <div class="step-head"><span>01 · VERB → PROPERTIES</span><b>knowledge graph</b></div>
-                  <div class="verb-chip">cut</div>
-                  <div class="property-list" aria-label="Properties associated with cutting">
-                    <span>sharp <b>.90</b></span>
-                    <span>blade <b>.90</b></span>
-                    <span>metallic <b>.80</b></span>
-                    <span>hinged <b>.90</b></span>
-                    <span>handle <b>.80</b></span>
+                  <div class="step-head"><span>01 · VERB → PROPERTIES</span><b>affordance graph</b></div>
+                  <div class="verb-property-flow">
+                    <div class="verb-chip" data-verb>cut</div>
+                    <span class="flow-arrow" aria-hidden="true">→</span>
+                    <div class="property-list" data-properties aria-label="Properties associated with the selected verb"></div>
                   </div>
+                </div>
+
+                <div class="reasoning-step object-step">
+                  <div class="step-head"><span>02 · PROPERTIES → OBJECTS</span><b>weighted graph paths</b></div>
+                  <div class="object-path-list" data-object-paths aria-label="Property to object reasoning paths"></div>
                 </div>
 
                 <div class="reasoning-step energy-step">
-                  <div class="step-head"><span>02 · CANDIDATE COST</span><b>best match = lowest cost</b></div>
-                  <p class="energy-explainer">Each bar is a penalty: shorter means stronger functional, visual, or grasp compatibility.</p>
+                  <div class="step-head"><span>03 · GROUND + GRASP</span><b>best match = lowest cost</b></div>
+                  <p class="energy-explainer">Shorter bars indicate lower functional, visual, and grasp penalties.</p>
                   <div class="energy-columns"><span>candidate</span><span>function</span><span>visual</span><span>grasp</span></div>
-                  <div class="candidate-row is-winner">
-                    <strong>scissors</strong><i style="--score:16%"></i><i style="--score:22%"></i><i style="--score:12%"></i>
-                  </div>
-                  <div class="candidate-row">
-                    <strong>binder clip</strong><i style="--score:78%"></i><i style="--score:62%"></i><i style="--score:18%"></i>
-                  </div>
-                  <div class="candidate-row">
-                    <strong>tape measure</strong><i style="--score:85%"></i><i style="--score:70%"></i><i style="--score:48%"></i>
-                  </div>
+                  <div data-candidates></div>
                 </div>
 
                 <div class="decision-row">
-                  <span>SELECTED OBJECT</span><strong>scissors</strong><small>graspable · aligned · functional</small>
+                  <span>SELECTED OBJECT</span><strong data-decision-object>scissors</strong><small data-decision-note>graspable · aligned · functional</small>
                 </div>
               </div>
             </div>
+            <p class="demo-note">Illustrative graph weights and costs are used to explain the inference flow; they are not reported benchmark measurements.</p>
           </div>
-          <p class="teaser-caption has-text-centered">Language → symbolic properties → scene candidates → grasp-aware selection.</p>
+          <p class="teaser-caption has-text-centered">Language → symbolic properties → compatible objects → scene grounding → grasp-aware selection.</p>
         </div>
       </div>
     </section>
@@ -402,6 +399,6 @@
   </footer>
 
   <script defer src="fontawesome.all.min.js"></script>
-  <script defer src="craft-e.js"></script>
+  <script defer src="craft-e.js?v=interactive3"></script>
 </body>
 </html>

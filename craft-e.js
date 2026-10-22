@@ -3,9 +3,161 @@ document.addEventListener('DOMContentLoaded', () => {
   const stage = demo?.querySelector('[data-stage]');
   const stageLabel = demo?.querySelector('[data-stage-label]');
   const replay = demo?.querySelector('[data-replay]');
+  const sceneTabs = demo?.querySelector('[data-scene-tabs]');
+  const queryTabs = demo?.querySelector('[data-query-tabs]');
+  const sceneName = demo?.querySelector('[data-scene-name]');
+  const sceneImage = demo?.querySelector('[data-scene-image]');
+  const sceneObjects = demo?.querySelector('[data-scene-objects]');
+  const verbNode = demo?.querySelector('[data-verb]');
+  const propertiesNode = demo?.querySelector('[data-properties]');
+  const objectPathsNode = demo?.querySelector('[data-object-paths]');
+  const candidatesNode = demo?.querySelector('[data-candidates]');
+  const decisionObject = demo?.querySelector('[data-decision-object]');
+  const decisionNote = demo?.querySelector('[data-decision-note]');
+  const roiNodes = [...(demo?.querySelectorAll('[data-roi]') || [])];
   let timers = [];
+  let activeScene = 0;
+  let activeQuery = 0;
 
-  const labels = ['Parsing query', 'Expanding properties', 'Scoring candidates', 'Scissors selected'];
+  const scenes = [
+    {
+      name: 'Scene 1',
+      image: 'cut-scene-v2.jpg',
+      alt: 'Tabletop scene with scissors, a binder clip, and a tape measure',
+      objects: [
+        { name: 'scissors', box: [47.1, 38.8, 22.7, 17.3] },
+        { name: 'binder clip', box: [38.2, 49.3, 9.8, 11.5] },
+        { name: 'tape measure', box: [53, 53.5, 14.5, 19.5] }
+      ],
+      queries: [
+        {
+          text: 'Give me something to cut with.', verb: 'cut', selected: 'scissors',
+          properties: [['sharp', '.90'], ['blade', '.90'], ['hinged', '.88'], ['handle', '.82']],
+          paths: [
+            ['scissors', ['sharp', 'blade', 'hinged'], '.92'],
+            ['binder clip', ['metallic', 'hinged'], '.38'],
+            ['tape measure', ['edged', 'handled'], '.24']
+          ],
+          costs: [['scissors', 16, 22, 12], ['binder clip', 78, 62, 18], ['tape measure', 85, 70, 48]],
+          note: 'sharp · aligned · graspable'
+        },
+        {
+          text: 'Give me something to fasten papers with.', verb: 'fasten', selected: 'binder clip',
+          properties: [['clamping', '.91'], ['spring-loaded', '.86'], ['compact', '.78'], ['metallic', '.72']],
+          paths: [
+            ['binder clip', ['clamping', 'spring-loaded', 'compact'], '.94'],
+            ['scissors', ['hinged', 'metallic'], '.31'],
+            ['tape measure', ['compact'], '.18']
+          ],
+          costs: [['binder clip', 12, 18, 10], ['scissors', 69, 36, 20], ['tape measure', 82, 48, 42]],
+          note: 'clamping · localized · graspable'
+        },
+        {
+          text: 'Give me something to measure with.', verb: 'measure', selected: 'tape measure',
+          properties: [['graduated', '.95'], ['retractable', '.87'], ['flexible', '.81'], ['portable', '.77']],
+          paths: [
+            ['tape measure', ['graduated', 'retractable', 'flexible'], '.96'],
+            ['scissors', ['portable'], '.17'],
+            ['binder clip', ['compact'], '.12']
+          ],
+          costs: [['tape measure', 10, 17, 25], ['scissors', 88, 34, 15], ['binder clip', 91, 45, 12]],
+          note: 'graduated · aligned · retrievable'
+        }
+      ]
+    },
+    {
+      name: 'Scene 2',
+      image: 'tool-scene.jpg',
+      alt: 'Tabletop scene with pliers, a screwdriver, and a red pen',
+      objects: [
+        { name: 'pliers', box: [36.5, 31.5, 17, 27] },
+        { name: 'screwdriver', box: [53, 29, 18, 31] },
+        { name: 'pen', box: [43, 62, 20, 7] }
+      ],
+      queries: [
+        {
+          text: 'Give me something to turn a screw with.', verb: 'turn', selected: 'screwdriver',
+          properties: [['rotational', '.93'], ['rigid shaft', '.90'], ['tip', '.87'], ['handled', '.80']],
+          paths: [
+            ['screwdriver', ['rotational', 'rigid shaft', 'tip'], '.95'],
+            ['pliers', ['handled', 'gripping'], '.47'],
+            ['pen', ['rigid shaft', 'tip'], '.29']
+          ],
+          costs: [['screwdriver', 11, 16, 18], ['pliers', 57, 24, 16], ['pen', 76, 20, 22]],
+          note: 'rotational · tip-aligned · graspable'
+        },
+        {
+          text: 'Give me something to write with.', verb: 'write', selected: 'pen',
+          properties: [['ink-bearing', '.96'], ['pointed', '.88'], ['slender', '.82'], ['handheld', '.79']],
+          paths: [
+            ['pen', ['ink-bearing', 'pointed', 'slender'], '.97'],
+            ['screwdriver', ['pointed', 'handheld'], '.32'],
+            ['pliers', ['handheld'], '.16']
+          ],
+          costs: [['pen', 8, 14, 12], ['screwdriver', 74, 22, 18], ['pliers', 89, 28, 14]],
+          note: 'ink-bearing · localized · graspable'
+        },
+        {
+          text: 'Give me something to grip with.', verb: 'grip', selected: 'pliers',
+          properties: [['jawed', '.94'], ['clamping', '.90'], ['levered', '.84'], ['handled', '.78']],
+          paths: [
+            ['pliers', ['jawed', 'clamping', 'levered'], '.96'],
+            ['screwdriver', ['handled'], '.22'],
+            ['pen', ['slender'], '.10']
+          ],
+          costs: [['pliers', 9, 18, 13], ['screwdriver', 83, 23, 16], ['pen', 92, 18, 20]],
+          note: 'jawed · clamping · graspable'
+        }
+      ]
+    },
+    {
+      name: 'Scene 3',
+      image: 'cut-scene.jpg',
+      alt: 'Tabletop scene with scissors, a hair tie, and an eraser',
+      objects: [
+        { name: 'scissors', box: [32, 35, 17, 24] },
+        { name: 'hair tie', box: [53, 39, 18, 24] },
+        { name: 'eraser', box: [43, 55, 16, 20] }
+      ],
+      queries: [
+        {
+          text: 'Give me something to cut with.', verb: 'cut', selected: 'scissors',
+          properties: [['sharp', '.90'], ['blade', '.90'], ['hinged', '.88'], ['handled', '.82']],
+          paths: [
+            ['scissors', ['sharp', 'blade', 'hinged'], '.93'],
+            ['eraser', ['handled'], '.13'],
+            ['hair tie', ['flexible'], '.08']
+          ],
+          costs: [['scissors', 12, 18, 14], ['eraser', 91, 25, 20], ['hair tie', 94, 34, 32]],
+          note: 'sharp · aligned · graspable'
+        },
+        {
+          text: 'Give me something to erase with.', verb: 'erase', selected: 'eraser',
+          properties: [['abrasive', '.91'], ['rubber', '.89'], ['frictional', '.83'], ['handheld', '.74']],
+          paths: [
+            ['eraser', ['abrasive', 'rubber', 'frictional'], '.95'],
+            ['scissors', ['handheld'], '.16'],
+            ['hair tie', ['rubber'], '.28']
+          ],
+          costs: [['eraser', 10, 15, 18], ['hair tie', 66, 28, 31], ['scissors', 90, 22, 15]],
+          note: 'abrasive · localized · graspable'
+        },
+        {
+          text: 'Give me something to bundle cables with.', verb: 'bundle', selected: 'hair tie',
+          properties: [['elastic', '.94'], ['looped', '.90'], ['flexible', '.86'], ['reusable', '.73']],
+          paths: [
+            ['hair tie', ['elastic', 'looped', 'flexible'], '.96'],
+            ['eraser', ['rubber'], '.20'],
+            ['scissors', ['reusable'], '.14']
+          ],
+          costs: [['hair tie', 9, 16, 28], ['eraser', 81, 24, 20], ['scissors', 88, 18, 14]],
+          note: 'elastic · looped · retrievable'
+        }
+      ]
+    }
+  ];
+
+  const labels = ['Parsing query', 'Expanding properties', 'Linking objects', 'Grounding candidates', 'Object selected'];
 
   const setStage = (value) => {
     if (!stage) return;
@@ -19,16 +171,101 @@ document.addEventListener('DOMContentLoaded', () => {
     setStage(0);
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setStage(3);
+      setStage(4);
       return;
     }
 
-    timers.push(window.setTimeout(() => setStage(1), 450));
-    timers.push(window.setTimeout(() => setStage(2), 1550));
-    timers.push(window.setTimeout(() => setStage(3), 2750));
+    timers.push(window.setTimeout(() => setStage(1), 350));
+    timers.push(window.setTimeout(() => setStage(2), 1050));
+    timers.push(window.setTimeout(() => setStage(3), 1850));
+    timers.push(window.setTimeout(() => setStage(4), 2750));
+  };
+
+  const renderSceneTabs = () => {
+    if (!sceneTabs) return;
+    sceneTabs.innerHTML = scenes.map((scene, index) =>
+      `<button type="button" data-scene-index="${index}" aria-pressed="${index === activeScene}">${scene.name}</button>`
+    ).join('');
+    sceneTabs.querySelectorAll('[data-scene-index]').forEach((button) => {
+      button.addEventListener('click', () => {
+        activeScene = Number(button.dataset.sceneIndex);
+        activeQuery = 0;
+        renderDemo();
+      });
+    });
+  };
+
+  const renderQueryTabs = (scene) => {
+    if (!queryTabs) return;
+    queryTabs.innerHTML = scene.queries.map((query, index) =>
+      `<button type="button" data-query-index="${index}" aria-pressed="${index === activeQuery}">“${query.text}”</button>`
+    ).join('');
+    queryTabs.querySelectorAll('[data-query-index]').forEach((button) => {
+      button.addEventListener('click', () => {
+        activeQuery = Number(button.dataset.queryIndex);
+        renderDemo();
+      });
+    });
+  };
+
+  const renderDemo = () => {
+    const scene = scenes[activeScene];
+    const query = scene.queries[activeQuery];
+
+    renderSceneTabs();
+    renderQueryTabs(scene);
+
+    if (sceneName) sceneName.textContent = scene.name.toUpperCase();
+    if (sceneImage) {
+      sceneImage.src = scene.image;
+      sceneImage.alt = scene.alt;
+    }
+    if (verbNode) verbNode.textContent = query.verb;
+    if (decisionObject) decisionObject.textContent = query.selected;
+    if (decisionNote) decisionNote.textContent = query.note;
+
+    if (sceneObjects) {
+      sceneObjects.innerHTML = scene.objects.map((object) => `<span>${object.name}</span>`).join('');
+    }
+
+    roiNodes.forEach((roi, index) => {
+      const object = scene.objects[index];
+      if (!object) return;
+      const [left, top, width, height] = object.box;
+      roi.style.left = `${left}%`;
+      roi.style.top = `${top}%`;
+      roi.style.width = `${width}%`;
+      roi.style.height = `${height}%`;
+      roi.classList.toggle('is-selected', object.name === query.selected);
+      roi.querySelector('span').textContent = object.name;
+    });
+
+    if (propertiesNode) {
+      propertiesNode.innerHTML = query.properties.map(([name, weight]) => `<span>${name} <b>${weight}</b></span>`).join('');
+    }
+
+    if (objectPathsNode) {
+      objectPathsNode.innerHTML = query.paths.map(([name, via, strength]) => `
+        <div class="object-path${name === query.selected ? ' is-winner' : ''}">
+          <div class="path-properties">${via.map((property) => `<em>${property}</em>`).join('<i>+</i>')}</div>
+          <span class="path-arrow">→</span>
+          <strong>${name}</strong>
+          <b>${strength}</b>
+        </div>`).join('');
+    }
+
+    if (candidatesNode) {
+      candidatesNode.innerHTML = query.costs.map(([name, functional, visual, grasp]) => `
+        <div class="candidate-row${name === query.selected ? ' is-winner' : ''}">
+          <strong>${name}</strong><i style="--score:${functional}%"></i><i style="--score:${visual}%"></i><i style="--score:${grasp}%"></i>
+        </div>`).join('');
+    }
+
+    runDemo();
   };
 
   if (demo && stage) {
+    renderDemo();
     const observer = new IntersectionObserver((entries) => {
       if (entries.some((entry) => entry.isIntersecting)) {
         runDemo();
