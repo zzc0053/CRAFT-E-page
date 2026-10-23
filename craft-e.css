@@ -641,7 +641,7 @@ body {
   display: grid;
   grid-template-columns: 1.35fr repeat(3, .65fr);
   align-items: center;
-  gap: .75rem;
+  gap: .45rem;
 }
 
 .energy-columns {
@@ -670,13 +670,22 @@ body {
 }
 
 .cost-cell {
-  display: grid;
-  grid-template-columns: minmax(34px, 1fr) 1.5rem;
+  display: flex;
   align-items: center;
-  gap: .15rem;
+  justify-content: flex-start;
+  gap: 5px;
+  min-width: 0;
+  padding-right: 14px;
+}
+
+.cost-cell i {
+  flex: 1;
+  min-width: 0;
 }
 
 .cost-cell small {
+  flex: 0 0 auto;
+  min-width: 22px;
   color: #64748b;
   font-family: var(--mono);
   font-size: .58rem;
