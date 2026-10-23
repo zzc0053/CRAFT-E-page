@@ -226,18 +226,38 @@ document.addEventListener('DOMContentLoaded', () => {
     return propertyAliases.get(normalized) || normalized;
   };
 
-  const recalculateConnectedPathScores = (scene, query) => {
-    const propertyCount = query.properties.length;
-    query.paths = scene.objects.map((object) => {
-      const objectWeights = new Map((object.properties || []).map(([name, weight]) => [normalizeProperty(name), Number.parseFloat(weight) || 0]));
-      const shared = query.properties.filter(([name]) => objectWeights.has(normalizeProperty(name)));
-      const matchedWeight = shared.reduce((sum, [name, verbWeight]) => {
-        return sum + (Number.parseFloat(verbWeight) || 0) * objectWeights.get(normalizeProperty(name));
-      }, 0);
-      const score = propertyCount > 0 ? matchedWeight / propertyCount : 0;
-      return [object.name, shared.map(([name]) => name), formatGraphScore(score)];
-    });
-  };
+const recalculateConnectedPathScores = (scene, query) => {
+  const denominator = query.properties.reduce(
+    (sum, [, weight]) => sum + Number.parseFloat(weight),
+    0
+  );
+
+  query.paths = scene.objects.map((object) => {
+    const objectWeights = new Map(
+      (object.properties || []).map(([name, weight]) => [
+        normalizeProperty(name),
+        Number.parseFloat(weight) || 0
+      ])
+    );
+
+    const shared = query.properties.filter(([name]) =>
+      objectWeights.has(normalizeProperty(name))
+    );
+
+    const matchedWeight = shared.reduce((sum, [name, verbWeight]) => {
+      return sum + (Number.parseFloat(verbWeight) || 0) *
+        objectWeights.get(normalizeProperty(name));
+    }, 0);
+
+    const score = denominator > 0 ? matchedWeight / denominator : 0;
+
+    return [
+      object.name,
+      shared.map(([name]) => name),
+      formatGraphScore(score)
+    ];
+  });
+};
 
   const renderInference = (scene, query) => {
     recalculateConnectedPathScores(scene, query);
