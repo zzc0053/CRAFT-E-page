@@ -278,7 +278,7 @@ const recalculateConnectedPathScores = (scene, query) => {
     });
 
     if (decisionObject) decisionObject.textContent = query.selected;
-    if (decisionNote) decisionNote.textContent = 'lowest combined cost · grounded · graspable';
+    if (decisionNote) decisionNote.textContent = 'lowest combined cost · affordance · alignment · grasp';
 
     if (objectPathsNode) {
       objectPathsNode.innerHTML = query.paths.map(([name, via, strength]) => `
