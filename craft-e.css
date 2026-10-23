@@ -680,7 +680,7 @@ body {
   color: #64748b;
   font-family: var(--mono);
   font-size: .58rem;
-  text-align: right;
+  text-align: left;
 }
 
 .candidate-row i {
