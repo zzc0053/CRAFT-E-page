@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
       objects: [
         { name: 'pliers', box: [34.8, 37.1, 15.2, 20.6], label: 'below', properties: [['grip', '.96'], ['rotational', '.82'], ['jawed', '.95'], ['lever', '.88'], ['handle', '.84']] },
         { name: 'screwdriver', box: [53.2, 36.5, 15.6, 22.5], label: 'below', properties: [['rotational', '.95'], ['rigid shaft', '.94'], ['fitted tip', '.91'], ['handle', '.87'], ['point', '.66']] },
-        { name: 'pen', box: [44.6, 63.6, 17.1, 4.2], label: 'below', properties: [['ink-bearing', '.97'], ['point', '.91'], ['slender', '.89'], ['handle', '.83'], ['rigid shaft', '.42']] }
+        { name: 'pen', box: [44.6, 63.6, 17.1, 4.2], label: 'below', properties: [['ink', '.90'], ['surface', '.70'], ['point', '.91'], ['handle', '.83'], ['tool', '.70']] }
       ],
       queries: [
         {
@@ -100,9 +100,9 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
           text: 'Give me something to write with.', verb: 'write', selected: 'pen',
-          properties: [['ink-bearing', '.96'], ['point', '.88'], ['slender', '.82'], ['handle', '.79']],
+          properties: [['ink', '.80'], ['surface', '.90'], ['graphite', '.85'], ['tool', '.70'], ['digital', '.75']],
           paths: [
-            ['pen', ['ink-bearing', 'point', 'slender'], '.97'],
+            ['pen', ['ink', 'surface', 'tool'], '.97'],
             ['screwdriver', ['point', 'handle'], '.32'],
             ['pliers', ['handle'], '.16']
           ],
