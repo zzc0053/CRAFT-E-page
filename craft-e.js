@@ -215,10 +215,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const matchedWeights = query.paths.map(([, via]) =>
       via.reduce((sum, property) => sum + (weights.get(property) || 0), 0)
     );
-    const strongest = Math.max(...matchedWeights, 0);
+    const totalWeight = [...weights.values()].reduce((sum, weight) => sum + weight, 0);
 
     query.paths.forEach((path, index) => {
-      const normalized = strongest > 0 ? (matchedWeights[index] / strongest) * .96 : 0;
+      const normalized = totalWeight > 0 ? (matchedWeights[index] / totalWeight) * .98 : 0;
       path[2] = formatGraphScore(normalized);
     });
   };
@@ -244,30 +244,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (decisionNote) decisionNote.textContent = 'lowest combined cost · grounded · graspable';
 
     if (objectPathsNode) {
-      objectPathsNode.innerHTML = query.paths.map(([name, via, strength], index) => `
+      objectPathsNode.innerHTML = query.paths.map(([name, via, strength]) => `
         <div class="object-path${name === query.selected ? ' is-winner' : ''}">
           <div class="path-properties">${via.map((property) => `<em>${property}</em>`).join('<i>+</i>')}</div>
           <span class="path-arrow">→</span>
           <strong>${name}</strong>
-          <input type="text" inputmode="decimal" data-path-score="${index}" value="${strength}" aria-label="Path score for ${name}" spellcheck="false">
+          <b>${strength}</b>
         </div>`).join('');
-
-      objectPathsNode.querySelectorAll('[data-path-score]').forEach((input) => {
-        const index = Number(input.dataset.pathScore);
-        input.addEventListener('focus', () => input.select());
-        input.addEventListener('keydown', (event) => {
-          if (event.key === 'Enter') input.blur();
-          if (event.key === 'Escape') {
-            input.value = query.paths[index][2];
-            input.blur();
-          }
-        });
-        input.addEventListener('blur', () => {
-          const parsed = Number.parseFloat(input.value);
-          query.paths[index][2] = formatGraphScore(Number.isFinite(parsed) ? parsed : Number.parseFloat(query.paths[index][2]));
-          renderInference(scene, query);
-        });
-      });
     }
 
     if (candidatesNode) {
