@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
       alt: 'Tabletop scene with scissors, a destapler, and a tape measure',
       objects: [
         { name: 'scissors', box: [49.4, 38.7, 20.4, 12.7] },
-        { name: 'destapler', box: [37.6, 51.8, 8.6, 9.4], label: 'below' },
+        { name: 'destapler', box: [37.8, 52.5, 7.2, 8.3], label: 'below' },
         { name: 'tape measure', box: [52.2, 57, 12.5, 16.6], label: 'below' }
       ],
       queries: [
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
       objects: [
         { name: 'scissors', box: [32.1, 34.8, 15.7, 22] },
         { name: 'hair tie', box: [55.5, 42.5, 14.5, 18.8] },
-        { name: 'eraser', box: [43.5, 55.2, 15.2, 20.2], label: 'below' }
+        { name: 'eraser', box: [44.2, 55.5, 14.2, 18.8], label: 'below' }
       ],
       queries: [
         {
