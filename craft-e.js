@@ -210,16 +210,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const formatGraphScore = (value) => Math.min(1, Math.max(0, value)).toFixed(2).replace(/^0/, '');
 
-  const recalculatePathScores = (query) => {
-    const weights = new Map(query.properties.map(([name, weight]) => [name, Number.parseFloat(weight) || 0]));
-    const matchedWeights = query.paths.map(([, via]) =>
-      via.reduce((sum, property) => sum + (weights.get(property) || 0), 0)
-    );
-    const totalWeight = [...weights.values()].reduce((sum, weight) => sum + weight, 0);
-
-    query.paths.forEach((path, index) => {
-      const normalized = totalWeight > 0 ? (matchedWeights[index] / totalWeight) * .98 : 0;
-      path[2] = formatGraphScore(normalized);
+  const updateConnectedPathScores = (query, propertyName, previousWeight, nextWeight) => {
+    const delta = nextWeight - previousWeight;
+    query.paths.forEach((path) => {
+      const connectedEdges = path[1].filter((property) => property === propertyName).length;
+      if (!connectedEdges) return;
+      const updated = (Number.parseFloat(path[2]) || 0) + (delta * connectedEdges / path[1].length);
+      path[2] = formatGraphScore(updated);
     });
   };
 
@@ -300,8 +297,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       propertiesNode.querySelectorAll('[data-property-score]').forEach((input) => {
         const index = Number(input.dataset.propertyScore);
-        const original = query.properties[index][1];
-
         input.addEventListener('focus', () => input.select());
         input.addEventListener('keydown', (event) => {
           if (event.key === 'Enter') input.blur();
@@ -312,11 +307,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         input.addEventListener('blur', () => {
           const parsed = Number.parseFloat(input.value);
-          const normalized = Number.isFinite(parsed) ? Math.min(1, Math.max(0, parsed)) : Number.parseFloat(original);
+          const propertyName = query.properties[index][0];
+          const previousWeight = Number.parseFloat(query.properties[index][1]);
+          const normalized = Number.isFinite(parsed) ? Math.min(1, Math.max(0, parsed)) : previousWeight;
           const formatted = normalized.toFixed(2).replace(/^0/, '');
           query.properties[index][1] = formatted;
           input.value = formatted;
-          recalculatePathScores(query);
+          updateConnectedPathScores(query, propertyName, previousWeight, normalized);
           renderInference(scene, query);
         });
       });
