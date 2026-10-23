@@ -225,14 +225,31 @@ document.addEventListener('DOMContentLoaded', () => {
     return propertyAliases.get(normalized) || normalized;
   };
 
-  const updateConnectedPathScores = (query, propertyName, previousWeight, nextWeight) => {
-    const delta = nextWeight - previousWeight;
-    const normalizedProperty = normalizeProperty(propertyName);
-    query.paths.forEach((path) => {
-      const connectedEdges = path[1].filter((property) => normalizeProperty(property) === normalizedProperty).length;
-      if (!connectedEdges) return;
-      const updated = (Number.parseFloat(path[2]) || 0) + (delta * connectedEdges / path[1].length * .35);
-      path[2] = formatGraphScore(updated);
+  const ensureGraphBaseline = (query) => {
+    if (query.graphBaseline) return;
+    query.graphBaseline = {
+      propertyWeights: query.properties.map(([, weight]) => Number.parseFloat(weight) || 0),
+      pathScores: query.paths.map(([, , score]) => Number.parseFloat(score) || 0)
+    };
+  };
+
+  const recalculateConnectedPathScores = (query) => {
+    ensureGraphBaseline(query);
+    query.paths.forEach((path, pathIndex) => {
+      const pathProperties = new Set(path[1].map(normalizeProperty));
+      const connectedIndices = query.properties
+        .map(([name], index) => pathProperties.has(normalizeProperty(name)) ? index : -1)
+        .filter((index) => index >= 0);
+
+      if (!connectedIndices.length) {
+        path[2] = formatGraphScore(query.graphBaseline.pathScores[pathIndex]);
+        return;
+      }
+
+      const baselineWeight = connectedIndices.reduce((sum, index) => sum + query.graphBaseline.propertyWeights[index], 0);
+      const currentWeight = connectedIndices.reduce((sum, index) => sum + (Number.parseFloat(query.properties[index][1]) || 0), 0);
+      const ratio = baselineWeight > 0 ? currentWeight / baselineWeight : 0;
+      path[2] = formatGraphScore(query.graphBaseline.pathScores[pathIndex] * ratio);
     });
   };
 
@@ -280,6 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const renderDemo = () => {
     const scene = scenes[activeScene];
     const query = scene.queries[activeQuery];
+    ensureGraphBaseline(query);
 
     renderSceneTabs();
     renderQueryTabs(scene);
@@ -323,13 +341,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         input.addEventListener('blur', () => {
           const parsed = Number.parseFloat(input.value);
-          const propertyName = query.properties[index][0];
           const previousWeight = Number.parseFloat(query.properties[index][1]);
           const normalized = Number.isFinite(parsed) ? Math.min(1, Math.max(0, parsed)) : previousWeight;
           const formatted = normalized.toFixed(2).replace(/^0/, '');
           query.properties[index][1] = formatted;
           input.value = formatted;
-          updateConnectedPathScores(query, propertyName, previousWeight, normalized);
+          recalculateConnectedPathScores(query);
           renderInference(scene, query);
         });
       });
