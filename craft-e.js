@@ -208,6 +208,79 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  const formatGraphScore = (value) => Math.min(1, Math.max(0, value)).toFixed(2).replace(/^0/, '');
+
+  const recalculatePathScores = (query) => {
+    const weights = new Map(query.properties.map(([name, weight]) => [name, Number.parseFloat(weight) || 0]));
+    const matchedWeights = query.paths.map(([, via]) =>
+      via.reduce((sum, property) => sum + (weights.get(property) || 0), 0)
+    );
+    const strongest = Math.max(...matchedWeights, 0);
+
+    query.paths.forEach((path, index) => {
+      const normalized = strongest > 0 ? (matchedWeights[index] / strongest) * .96 : 0;
+      path[2] = formatGraphScore(normalized);
+    });
+  };
+
+  const renderInference = (scene, query) => {
+    const pathScores = new Map(query.paths.map(([name, , strength]) => [name, Number.parseFloat(strength) || 0]));
+    query.costs.forEach((cost) => {
+      cost[1] = Math.round((1 - (pathScores.get(cost[0]) || 0)) * 100);
+    });
+
+    const winner = query.costs.reduce((best, candidate) => {
+      const total = candidate[1] + candidate[2] + candidate[3];
+      const bestTotal = best[1] + best[2] + best[3];
+      return total < bestTotal ? candidate : best;
+    });
+    query.selected = winner[0];
+
+    roiNodes.forEach((roi, index) => {
+      roi.classList.toggle('is-selected', scene.objects[index]?.name === query.selected);
+    });
+
+    if (decisionObject) decisionObject.textContent = query.selected;
+    if (decisionNote) decisionNote.textContent = 'lowest combined cost · grounded · graspable';
+
+    if (objectPathsNode) {
+      objectPathsNode.innerHTML = query.paths.map(([name, via, strength], index) => `
+        <div class="object-path${name === query.selected ? ' is-winner' : ''}">
+          <div class="path-properties">${via.map((property) => `<em>${property}</em>`).join('<i>+</i>')}</div>
+          <span class="path-arrow">→</span>
+          <strong>${name}</strong>
+          <input type="text" inputmode="decimal" data-path-score="${index}" value="${strength}" aria-label="Path score for ${name}" spellcheck="false">
+        </div>`).join('');
+
+      objectPathsNode.querySelectorAll('[data-path-score]').forEach((input) => {
+        const index = Number(input.dataset.pathScore);
+        input.addEventListener('focus', () => input.select());
+        input.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter') input.blur();
+          if (event.key === 'Escape') {
+            input.value = query.paths[index][2];
+            input.blur();
+          }
+        });
+        input.addEventListener('blur', () => {
+          const parsed = Number.parseFloat(input.value);
+          query.paths[index][2] = formatGraphScore(Number.isFinite(parsed) ? parsed : Number.parseFloat(query.paths[index][2]));
+          renderInference(scene, query);
+        });
+      });
+    }
+
+    if (candidatesNode) {
+      candidatesNode.innerHTML = query.costs.map(([name, functional, visual, grasp]) => `
+        <div class="candidate-row${name === query.selected ? ' is-winner' : ''}">
+          <strong>${name}</strong>
+          <span class="cost-cell"><i style="--score:${functional}%"></i><small>${functional}</small></span>
+          <span class="cost-cell"><i style="--score:${visual}%"></i><small>${visual}</small></span>
+          <span class="cost-cell"><i style="--score:${grasp}%"></i><small>${grasp}</small></span>
+        </div>`).join('');
+    }
+  };
+
   const renderDemo = () => {
     const scene = scenes[activeScene];
     const query = scene.queries[activeQuery];
@@ -221,9 +294,6 @@ document.addEventListener('DOMContentLoaded', () => {
       sceneImage.alt = scene.alt;
     }
     if (verbNode) verbNode.textContent = query.verb;
-    if (decisionObject) decisionObject.textContent = query.selected;
-    if (decisionNote) decisionNote.textContent = query.note;
-
     if (sceneObjects) {
       sceneObjects.innerHTML = scene.objects.map((object) => `<span>${object.name}</span>`).join('');
     }
@@ -237,7 +307,6 @@ document.addEventListener('DOMContentLoaded', () => {
       roi.style.width = `${width}%`;
       roi.style.height = `${height}%`;
       roi.classList.toggle('label-below', object.label === 'below');
-      roi.classList.toggle('is-selected', object.name === query.selected);
       roi.querySelector('span').textContent = object.name;
     });
 
@@ -264,26 +333,13 @@ document.addEventListener('DOMContentLoaded', () => {
           const formatted = normalized.toFixed(2).replace(/^0/, '');
           query.properties[index][1] = formatted;
           input.value = formatted;
+          recalculatePathScores(query);
+          renderInference(scene, query);
         });
       });
     }
 
-    if (objectPathsNode) {
-      objectPathsNode.innerHTML = query.paths.map(([name, via, strength]) => `
-        <div class="object-path${name === query.selected ? ' is-winner' : ''}">
-          <div class="path-properties">${via.map((property) => `<em>${property}</em>`).join('<i>+</i>')}</div>
-          <span class="path-arrow">→</span>
-          <strong>${name}</strong>
-          <b>${strength}</b>
-        </div>`).join('');
-    }
-
-    if (candidatesNode) {
-      candidatesNode.innerHTML = query.costs.map(([name, functional, visual, grasp]) => `
-        <div class="candidate-row${name === query.selected ? ' is-winner' : ''}">
-          <strong>${name}</strong><i style="--score:${functional}%"></i><i style="--score:${visual}%"></i><i style="--score:${grasp}%"></i>
-        </div>`).join('');
-    }
+    renderInference(scene, query);
 
     runDemo();
   };

@@ -553,10 +553,28 @@ body {
   font-size: .58rem;
 }
 
-.object-path > b {
+.object-path > b,
+.object-path > input {
   color: #64748b;
   font-family: var(--mono);
   font-size: .55rem;
+}
+
+.object-path > input {
+  width: 3.4em;
+  padding: .16rem .2rem;
+  border: 1px solid #334155;
+  border-radius: 5px;
+  background: transparent;
+  text-align: center;
+  outline: none;
+}
+
+.object-path > input:hover,
+.object-path > input:focus {
+  border-color: #22d3ee;
+  color: #22d3ee;
+  background: rgba(34, 211, 238, .08);
 }
 
 .object-path.is-winner {
@@ -565,7 +583,8 @@ body {
 }
 
 .object-path.is-winner strong,
-.object-path.is-winner > b {
+.object-path.is-winner > b,
+.object-path.is-winner > input {
   color: #86efac;
 }
 
@@ -602,6 +621,20 @@ body {
   font-weight: 400;
 }
 
+.cost-cell {
+  display: grid;
+  grid-template-columns: minmax(34px, 1fr) 1.5rem;
+  align-items: center;
+  gap: .28rem;
+}
+
+.cost-cell small {
+  color: #64748b;
+  font-family: var(--mono);
+  font-size: .48rem;
+  text-align: right;
+}
+
 .candidate-row i {
   position: relative;
   overflow: hidden;
@@ -623,6 +656,10 @@ body {
 .candidate-row.is-winner strong {
   color: #86efac;
   font-weight: 700;
+}
+
+.candidate-row.is-winner .cost-cell small {
+  color: #16a34a;
 }
 
 .candidate-row.is-winner i::after {
