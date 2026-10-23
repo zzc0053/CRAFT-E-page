@@ -286,6 +286,80 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  const escapeAttribute = (value) => String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('"', '&quot;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');
+
+  const renderPropertyEditor = (scene, query, focusIndex = -1) => {
+    if (!propertiesNode) return;
+
+    propertiesNode.innerHTML = query.properties.map(([name, weight], index) => `
+      <span class="property-chip">
+        <input class="property-name" type="text" maxlength="15" data-property-name="${index}" value="${escapeAttribute(name)}" aria-label="Property ${index + 1} name" spellcheck="false" style="--name-ch:${Math.max(4, Math.min(15, name.length))}">
+        <input class="property-score" type="text" inputmode="decimal" data-property-score="${index}" value="${escapeAttribute(weight)}" aria-label="Weight for ${escapeAttribute(name)}" spellcheck="false">
+        <button class="property-remove" type="button" data-property-remove="${index}" aria-label="Remove ${escapeAttribute(name)}">−</button>
+      </span>
+    `).join('') + `<button class="property-add" type="button" data-property-add aria-label="Add property" ${query.properties.length >= 5 ? 'disabled' : ''}>+</button>`;
+
+    propertiesNode.querySelectorAll('[data-property-name]').forEach((input) => {
+      const index = Number(input.dataset.propertyName);
+      input.addEventListener('focus', () => input.select());
+      input.addEventListener('input', () => {
+        const name = input.value.slice(0, 15);
+        input.style.setProperty('--name-ch', Math.max(4, Math.min(15, name.length)));
+        query.properties[index][0] = name;
+        renderInference(scene, query);
+      });
+      input.addEventListener('blur', () => {
+        const name = input.value.trim().slice(0, 15) || 'property';
+        query.properties[index][0] = name;
+        input.value = name;
+        input.style.setProperty('--name-ch', Math.max(4, Math.min(15, name.length)));
+        renderInference(scene, query);
+      });
+    });
+
+    propertiesNode.querySelectorAll('[data-property-score]').forEach((input) => {
+      const index = Number(input.dataset.propertyScore);
+      input.addEventListener('focus', () => input.select());
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') input.blur();
+        if (event.key === 'Escape') {
+          input.value = query.properties[index][1];
+          input.blur();
+        }
+      });
+      input.addEventListener('blur', () => {
+        const parsed = Number.parseFloat(input.value);
+        const previousWeight = Number.parseFloat(query.properties[index][1]);
+        const normalized = Number.isFinite(parsed) ? Math.min(1, Math.max(0, parsed)) : previousWeight;
+        const formatted = normalized.toFixed(2).replace(/^0/, '');
+        query.properties[index][1] = formatted;
+        input.value = formatted;
+        renderInference(scene, query);
+      });
+    });
+
+    propertiesNode.querySelectorAll('[data-property-remove]').forEach((button) => {
+      button.addEventListener('click', () => {
+        query.properties.splice(Number(button.dataset.propertyRemove), 1);
+        renderPropertyEditor(scene, query);
+        renderInference(scene, query);
+      });
+    });
+
+    propertiesNode.querySelector('[data-property-add]')?.addEventListener('click', () => {
+      if (query.properties.length >= 5) return;
+      query.properties.push(['property', '.50']);
+      renderPropertyEditor(scene, query, query.properties.length - 1);
+      renderInference(scene, query);
+    });
+
+    if (focusIndex >= 0) propertiesNode.querySelector(`[data-property-name="${focusIndex}"]`)?.focus();
+  };
+
   const renderDemo = () => {
     const scene = scenes[activeScene];
     const query = scene.queries[activeQuery];
@@ -323,32 +397,7 @@ document.addEventListener('DOMContentLoaded', () => {
       roi.querySelector('span').textContent = object.name;
     });
 
-    if (propertiesNode) {
-      propertiesNode.innerHTML = query.properties.map(([name, weight], index) => `
-        <span>${name}<input type="text" inputmode="decimal" data-property-score="${index}" value="${weight}" aria-label="Weight for ${name}" spellcheck="false"></span>
-      `).join('');
-
-      propertiesNode.querySelectorAll('[data-property-score]').forEach((input) => {
-        const index = Number(input.dataset.propertyScore);
-        input.addEventListener('focus', () => input.select());
-        input.addEventListener('keydown', (event) => {
-          if (event.key === 'Enter') input.blur();
-          if (event.key === 'Escape') {
-            input.value = query.properties[index][1];
-            input.blur();
-          }
-        });
-        input.addEventListener('blur', () => {
-          const parsed = Number.parseFloat(input.value);
-          const previousWeight = Number.parseFloat(query.properties[index][1]);
-          const normalized = Number.isFinite(parsed) ? Math.min(1, Math.max(0, parsed)) : previousWeight;
-          const formatted = normalized.toFixed(2).replace(/^0/, '');
-          query.properties[index][1] = formatted;
-          input.value = formatted;
-          renderInference(scene, query);
-        });
-      });
-    }
+    renderPropertyEditor(scene, query);
 
     renderInference(scene, query);
 

@@ -481,6 +481,9 @@ body {
 }
 
 .property-list span {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
   padding: .3rem .5rem;
   border: 1px solid #334155;
   border-radius: 999px;
@@ -495,6 +498,68 @@ body {
 .property-list b,
 .property-list input {
   color: #22d3ee;
+}
+
+.property-list .property-name {
+  width: calc(var(--name-ch, 8) * 1ch + .7rem);
+  max-width: 16ch;
+  margin-left: 0;
+  color: #cbd5e1;
+  font-weight: 400;
+  text-align: left;
+}
+
+.property-list .property-score {
+  width: 3.15em;
+}
+
+.property-remove {
+  position: absolute;
+  top: -.36rem;
+  right: -.26rem;
+  display: grid;
+  width: 1rem;
+  height: 1rem;
+  padding: 0;
+  place-items: center;
+  border: 1px solid #475569;
+  border-radius: 50%;
+  background: #111b2e;
+  color: #94a3b8;
+  font: 700 .72rem/1 var(--mono);
+  cursor: pointer;
+}
+
+.property-remove:hover,
+.property-remove:focus-visible {
+  border-color: #f87171;
+  color: #f87171;
+  outline: none;
+}
+
+.property-add {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  place-items: center;
+  border: 1px dashed #38bdf8;
+  border-radius: 50%;
+  background: rgba(56, 189, 248, .08);
+  color: #38bdf8;
+  font: 600 1rem/1 var(--mono);
+  cursor: pointer;
+}
+
+.property-add:hover,
+.property-add:focus-visible {
+  background: rgba(56, 189, 248, .18);
+  outline: none;
+}
+
+.property-add:disabled {
+  opacity: .3;
+  cursor: not-allowed;
 }
 
 .property-list input {
@@ -670,26 +735,17 @@ body {
 }
 
 .cost-cell {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(34px, 1fr) 1.5rem;
   align-items: center;
-  justify-content: flex-start;
-  gap: 5px;
-  min-width: 0;
-  padding-right: 14px;
-}
-
-.cost-cell i {
-  flex: 1;
-  min-width: 0;
+  gap: .28rem;
 }
 
 .cost-cell small {
-  flex: 0 0 auto;
-  min-width: 22px;
   color: #64748b;
   font-family: var(--mono);
   font-size: .58rem;
-  text-align: left;
+  text-align: right;
 }
 
 .candidate-row i {
@@ -977,6 +1033,16 @@ body {
   .property-list b,
   .property-list input {
     color: #0284c7;
+  }
+
+  .property-list .property-name {
+    color: #334155;
+  }
+
+  .property-remove {
+    border-color: #cbd5e1;
+    background: #fff;
+    color: #64748b;
   }
 
   .property-list input:hover,
