@@ -210,12 +210,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const formatGraphScore = (value) => Math.min(1, Math.max(0, value)).toFixed(2).replace(/^0/, '');
 
+  const propertyAliases = new Map([
+    ['handled', 'handle'], ['handheld', 'handle'],
+    ['gripping', 'grip'], ['gripped', 'grip'],
+    ['edged', 'edge'],
+    ['hinged', 'hinge'],
+    ['levered', 'lever'],
+    ['pointed', 'point'],
+    ['bladed', 'blade']
+  ]);
+
+  const normalizeProperty = (property) => {
+    const normalized = property.toLowerCase().trim();
+    return propertyAliases.get(normalized) || normalized;
+  };
+
   const updateConnectedPathScores = (query, propertyName, previousWeight, nextWeight) => {
     const delta = nextWeight - previousWeight;
+    const normalizedProperty = normalizeProperty(propertyName);
     query.paths.forEach((path) => {
-      const connectedEdges = path[1].filter((property) => property === propertyName).length;
+      const connectedEdges = path[1].filter((property) => normalizeProperty(property) === normalizedProperty).length;
       if (!connectedEdges) return;
-      const updated = (Number.parseFloat(path[2]) || 0) + (delta * connectedEdges / path[1].length);
+      const updated = (Number.parseFloat(path[2]) || 0) + (delta * connectedEdges / path[1].length * .35);
       path[2] = formatGraphScore(updated);
     });
   };
