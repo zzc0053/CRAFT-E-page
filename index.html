@@ -210,12 +210,17 @@
                 </div>
 
                 <div class="reasoning-step object-step">
-                  <div class="step-head"><span>02 · PROPERTIES → OBJECTS</span><b>updates from property weights</b></div>
+                  <div class="step-head"><span>02 · OBJECTS → PROPERTIES</span><b>object-side graph edges</b></div>
+                  <div class="object-property-list" data-object-properties aria-label="Properties associated with each detected object"></div>
+                </div>
+
+                <div class="reasoning-step object-step">
+                  <div class="step-head"><span>03 · SHARED PROPERTIES → OBJECTS</span><b>intersection updates from verb weights</b></div>
                   <div class="object-path-list" data-object-paths aria-label="Property to object reasoning paths"></div>
                 </div>
 
                 <div class="reasoning-step energy-step">
-                  <div class="step-head"><span>03 · GROUND + GRASP</span><b>best match = lowest cost</b></div>
+                  <div class="step-head"><span>04 · GROUND + GRASP</span><b>best match = lowest cost</b></div>
                   <p class="energy-explainer">Shorter bars indicate lower functional, visual, and grasp penalties.</p>
                   <div class="energy-columns"><span>candidate</span><span>function</span><span>visual</span><span>grasp</span></div>
                   <div data-candidates></div>
@@ -228,7 +233,7 @@
             </div>
             <p class="demo-note">Illustrative graph weights and costs are used to explain the inference flow; they are not reported benchmark measurements.</p>
           </div>
-          <p class="teaser-caption has-text-centered">Language → symbolic properties → compatible objects → scene grounding → grasp-aware selection.</p>
+          <p class="teaser-caption has-text-centered">Language → verb properties + object properties → shared graph edges → scene grounding → grasp-aware selection.</p>
         </div>
       </div>
     </section>
@@ -271,7 +276,7 @@
           <div class="column is-5">
             <p class="section-eyebrow">WHY A KNOWLEDGE GRAPH?</p>
             <h2 class="title is-3 left-title">Reason about functions, not only labels</h2>
-            <p class="graph-lead">“Cut” is not an object category. It is a bundle of useful properties—sharp, bladed, metallic, hinged, and handled—that can be connected to objects present in a new scene.</p>
+            <p class="graph-lead">“Cut” is not an object category. It is a bundle of useful functional properties—sharp, bladed, and metallic—that can be connected to objects present in a new scene.</p>
             <ul class="graph-benefits">
               <li><i class="fas fa-route" aria-hidden="true"></i><div><strong>Interpretable</strong><span>Inspect the verb → property → object path behind a decision.</span></div></li>
               <li><i class="fas fa-sliders-h" aria-hidden="true"></i><div><strong>Editable</strong><span>Adjust a node, edge, or prior without retraining the full system.</span></div></li>
@@ -399,6 +404,6 @@
   </footer>
 
   <script defer src="fontawesome.all.min.js"></script>
-  <script defer src="craft-e.js?v=inference6"></script>
+  <script defer src="craft-e.js?v=inference9"></script>
 </body>
 </html>

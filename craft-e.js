@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const sceneObjects = demo?.querySelector('[data-scene-objects]');
   const verbNode = demo?.querySelector('[data-verb]');
   const propertiesNode = demo?.querySelector('[data-properties]');
+  const objectPropertiesNode = demo?.querySelector('[data-object-properties]');
   const objectPathsNode = demo?.querySelector('[data-object-paths]');
   const candidatesNode = demo?.querySelector('[data-candidates]');
   const decisionObject = demo?.querySelector('[data-decision-object]');
@@ -25,18 +26,18 @@ document.addEventListener('DOMContentLoaded', () => {
       image: 'cut-scene-v2.jpg',
       alt: 'Tabletop scene with scissors, a destapler, and a tape measure',
       objects: [
-        { name: 'scissors', box: [49.4, 38.7, 20.4, 12.7] },
-        { name: 'destapler', box: [37.8, 52.5, 7.2, 8.3], label: 'below' },
-        { name: 'tape measure', box: [52.2, 57, 12.5, 16.6], label: 'below' }
+        { name: 'scissors', box: [49.4, 38.7, 20.4, 12.7], properties: [['sharp', '.90'], ['blade', '.90'], ['metallic', '.90'], ['hinge', '.90'], ['handle', '.80']] },
+        { name: 'destapler', box: [37.8, 52.5, 7.2, 8.3], label: 'below', properties: [['prying', '.94'], ['grip', '.88'], ['lever', '.91'], ['metallic', '.74'], ['handle', '.76']] },
+        { name: 'tape measure', box: [52.2, 57, 12.5, 16.6], label: 'below', properties: [['graduated', '.96'], ['retractable', '.90'], ['flexible', '.84'], ['portable', '.82'], ['metallic', '.32']] }
       ],
       queries: [
         {
           text: 'Give me something to cut with.', verb: 'cut', selected: 'scissors',
-          properties: [['sharp', '.90'], ['blade', '.90'], ['hinge', '.88'], ['handle', '.82']],
+          properties: [['sharp', '.90'], ['blade', '.90'], ['metallic', '.80']],
           paths: [
-            ['scissors', ['sharp', 'blade', 'hinge'], '.92'],
-            ['destapler', ['metallic', 'lever'], '.38'],
-            ['tape measure', ['edge', 'handle'], '.24']
+            ['scissors', ['sharp', 'blade'], '.92'],
+            ['destapler', ['metallic', 'edge'], '.38'],
+            ['tape measure', ['edge'], '.24']
           ],
           costs: [['scissors', 16, 22, 12], ['destapler', 78, 62, 18], ['tape measure', 85, 70, 48]],
           note: 'sharp · aligned · graspable'
@@ -70,9 +71,9 @@ document.addEventListener('DOMContentLoaded', () => {
       image: 'tool-scene.jpg',
       alt: 'Tabletop scene with pliers, a screwdriver, and a red pen',
       objects: [
-        { name: 'pliers', box: [34.8, 37.1, 15.2, 20.6], label: 'below' },
-        { name: 'screwdriver', box: [53.2, 36.5, 15.6, 22.5], label: 'below' },
-        { name: 'pen', box: [44.6, 63.6, 17.1, 4.2], label: 'below' }
+        { name: 'pliers', box: [34.8, 37.1, 15.2, 20.6], label: 'below', properties: [['grip', '.96'], ['rotational', '.82'], ['jawed', '.95'], ['lever', '.88'], ['handle', '.84']] },
+        { name: 'screwdriver', box: [53.2, 36.5, 15.6, 22.5], label: 'below', properties: [['rotational', '.95'], ['rigid shaft', '.94'], ['fitted tip', '.91'], ['handle', '.87'], ['point', '.66']] },
+        { name: 'pen', box: [44.6, 63.6, 17.1, 4.2], label: 'below', properties: [['ink-bearing', '.97'], ['point', '.91'], ['slender', '.89'], ['handle', '.83'], ['rigid shaft', '.42']] }
       ],
       queries: [
         {
@@ -115,18 +116,17 @@ document.addEventListener('DOMContentLoaded', () => {
       image: 'cut-scene.jpg',
       alt: 'Tabletop scene with scissors, a hair tie, and an eraser',
       objects: [
-        { name: 'scissors', box: [32.1, 34.8, 15.7, 22] },
-        { name: 'hair tie', box: [55.5, 42.5, 14.5, 18.8] },
-        { name: 'eraser', box: [44.2, 55.5, 14.2, 18.8], label: 'below' }
+        { name: 'scissors', box: [32.1, 34.8, 15.7, 22], properties: [['sharp', '.90'], ['blade', '.90'], ['metallic', '.90'], ['hinge', '.90'], ['handle', '.80']] },
+        { name: 'hair tie', box: [55.5, 42.5, 14.5, 18.8], properties: [['elastic', '.97'], ['looped', '.94'], ['flexible', '.92'], ['reusable', '.82'], ['frictional', '.54']] },
+        { name: 'eraser', box: [44.2, 55.5, 14.2, 18.8], label: 'below', properties: [['abrasive', '.94'], ['frictional', '.91'], ['residue-lifting', '.88'], ['rubber', '.96'], ['edge', '.20']] }
       ],
       queries: [
         {
           text: 'Give me something to cut with.', verb: 'cut', selected: 'scissors',
-          properties: [['sharp', '.90'], ['blade', '.90'], ['hinge', '.88'], ['handle', '.82']],
+          properties: [['sharp', '.90'], ['blade', '.90'], ['metallic', '.80']],
           paths: [
-            ['scissors', ['sharp', 'blade', 'hinge'], '.93'],
-            ['eraser', ['handle'], '.13'],
-            ['hair tie', ['flexible'], '.08']
+            ['scissors', ['sharp', 'blade'], '.92'],
+            ['eraser', ['edge'], '.24']
           ],
           costs: [['scissors', 12, 18, 14], ['eraser', 91, 25, 20], ['hair tie', 94, 34, 32]],
           note: 'sharp · aligned · graspable'
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
-  const labels = ['Parsing query', 'Expanding properties', 'Linking objects', 'Grounding candidates', 'Object selected'];
+  const labels = ['Parsing query', 'Expanding verb properties', 'Reading object properties', 'Matching shared properties', 'Grounding candidates', 'Object selected'];
 
   const setStage = (value) => {
     if (!stage) return;
@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setStage(0);
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setStage(4);
+      setStage(5);
       return;
     }
 
@@ -179,6 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
     timers.push(window.setTimeout(() => setStage(2), 1050));
     timers.push(window.setTimeout(() => setStage(3), 1850));
     timers.push(window.setTimeout(() => setStage(4), 2750));
+    timers.push(window.setTimeout(() => setStage(5), 3550));
   };
 
   const renderSceneTabs = () => {
@@ -225,35 +226,21 @@ document.addEventListener('DOMContentLoaded', () => {
     return propertyAliases.get(normalized) || normalized;
   };
 
-  const ensureGraphBaseline = (query) => {
-    if (query.graphBaseline) return;
-    query.graphBaseline = {
-      propertyWeights: query.properties.map(([, weight]) => Number.parseFloat(weight) || 0),
-      pathScores: query.paths.map(([, , score]) => Number.parseFloat(score) || 0)
-    };
-  };
-
-  const recalculateConnectedPathScores = (query) => {
-    ensureGraphBaseline(query);
-    query.paths.forEach((path, pathIndex) => {
-      const pathProperties = new Set(path[1].map(normalizeProperty));
-      const connectedIndices = query.properties
-        .map(([name], index) => pathProperties.has(normalizeProperty(name)) ? index : -1)
-        .filter((index) => index >= 0);
-
-      if (!connectedIndices.length) {
-        path[2] = formatGraphScore(query.graphBaseline.pathScores[pathIndex]);
-        return;
-      }
-
-      const baselineWeight = connectedIndices.reduce((sum, index) => sum + query.graphBaseline.propertyWeights[index], 0);
-      const currentWeight = connectedIndices.reduce((sum, index) => sum + (Number.parseFloat(query.properties[index][1]) || 0), 0);
-      const ratio = baselineWeight > 0 ? currentWeight / baselineWeight : 0;
-      path[2] = formatGraphScore(query.graphBaseline.pathScores[pathIndex] * ratio);
+  const recalculateConnectedPathScores = (scene, query) => {
+    const propertyCount = query.properties.length;
+    query.paths = scene.objects.map((object) => {
+      const objectWeights = new Map((object.properties || []).map(([name, weight]) => [normalizeProperty(name), Number.parseFloat(weight) || 0]));
+      const shared = query.properties.filter(([name]) => objectWeights.has(normalizeProperty(name)));
+      const matchedWeight = shared.reduce((sum, [name, verbWeight]) => {
+        return sum + (Number.parseFloat(verbWeight) || 0) * objectWeights.get(normalizeProperty(name));
+      }, 0);
+      const score = propertyCount > 0 ? matchedWeight / propertyCount : 0;
+      return [object.name, shared.map(([name]) => name), formatGraphScore(score)];
     });
   };
 
   const renderInference = (scene, query) => {
+    recalculateConnectedPathScores(scene, query);
     const pathScores = new Map(query.paths.map(([name, , strength]) => [name, Number.parseFloat(strength) || 0]));
     query.costs.forEach((cost) => {
       cost[1] = Math.round((1 - (pathScores.get(cost[0]) || 0)) * 100);
@@ -276,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (objectPathsNode) {
       objectPathsNode.innerHTML = query.paths.map(([name, via, strength]) => `
         <div class="object-path${name === query.selected ? ' is-winner' : ''}">
-          <div class="path-properties">${via.map((property) => `<em>${property}</em>`).join('<i>+</i>')}</div>
+          <div class="path-properties">${via.length ? via.map((property) => `<em>${property}</em>`).join('<i>+</i>') : '<span>no shared property</span>'}</div>
           <span class="path-arrow">→</span>
           <strong>${name}</strong>
           <b>${strength}</b>
@@ -297,7 +284,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const renderDemo = () => {
     const scene = scenes[activeScene];
     const query = scene.queries[activeQuery];
-    ensureGraphBaseline(query);
 
     renderSceneTabs();
     renderQueryTabs(scene);
@@ -310,6 +296,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (verbNode) verbNode.textContent = query.verb;
     if (sceneObjects) {
       sceneObjects.innerHTML = scene.objects.map((object) => `<span>${object.name}</span>`).join('');
+    }
+    if (objectPropertiesNode) {
+      objectPropertiesNode.innerHTML = scene.objects.map((object) => `
+        <article class="object-property-card">
+          <strong>${object.name}</strong>
+          <div>${(object.properties || []).map(([name, weight]) => `<span>${name}<b>${weight}</b></span>`).join('')}</div>
+        </article>
+      `).join('');
     }
 
     roiNodes.forEach((roi, index) => {
@@ -346,7 +340,6 @@ document.addEventListener('DOMContentLoaded', () => {
           const formatted = normalized.toFixed(2).replace(/^0/, '');
           query.properties[index][1] = formatted;
           input.value = formatted;
-          recalculateConnectedPathScores(query);
           renderInference(scene, query);
         });
       });
