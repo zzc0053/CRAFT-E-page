@@ -70,9 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
       image: 'tool-scene.jpg',
       alt: 'Tabletop scene with pliers, a screwdriver, and a red pen',
       objects: [
-        { name: 'pliers', box: [36.5, 31.5, 17, 27] },
-        { name: 'screwdriver', box: [53, 29, 18, 31] },
-        { name: 'pen', box: [43, 62, 20, 7] }
+        { name: 'pliers', box: [34.8, 37.1, 15.2, 20.6], label: 'below' },
+        { name: 'screwdriver', box: [53.2, 36.5, 15.6, 22.5], label: 'below' },
+        { name: 'pen', box: [44.6, 63.6, 17.1, 4.2], label: 'below' }
       ],
       queries: [
         {
@@ -115,9 +115,9 @@ document.addEventListener('DOMContentLoaded', () => {
       image: 'cut-scene.jpg',
       alt: 'Tabletop scene with scissors, a hair tie, and an eraser',
       objects: [
-        { name: 'scissors', box: [32, 35, 17, 24] },
-        { name: 'hair tie', box: [53, 39, 18, 24] },
-        { name: 'eraser', box: [43, 55, 16, 20] }
+        { name: 'scissors', box: [32.1, 34.8, 15.7, 22] },
+        { name: 'hair tie', box: [54, 42, 16.3, 19.3], label: 'below' },
+        { name: 'eraser', box: [43.5, 55.2, 15.2, 20.2], label: 'below' }
       ],
       queries: [
         {
