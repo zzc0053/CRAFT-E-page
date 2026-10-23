@@ -641,7 +641,7 @@ body {
   display: grid;
   grid-template-columns: 1.35fr repeat(3, .65fr);
   align-items: center;
-  gap: .45rem;
+  gap: .75rem;
 }
 
 .energy-columns {
@@ -673,7 +673,7 @@ body {
   display: grid;
   grid-template-columns: minmax(34px, 1fr) 1.5rem;
   align-items: center;
-  gap: .28rem;
+  gap: .15rem;
 }
 
 .cost-cell small {
