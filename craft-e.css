@@ -618,12 +618,58 @@ body {
 }
 
 .object-property-card span {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
   padding: .24rem .4rem;
   border-radius: 999px;
   background: #111b2e;
   color: #9fb0c9;
   font-family: var(--mono);
   font-size: .66rem;
+}
+
+.object-property-chip input {
+  padding: .05rem .12rem;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: 1;
+  outline: none;
+}
+
+.object-property-chip input:hover,
+.object-property-chip input:focus {
+  border-color: #475569;
+  background: rgba(34, 211, 238, .08);
+}
+
+.object-property-name {
+  width: calc(var(--name-ch, 8) * 1ch + .35rem);
+  max-width: 15.5ch;
+}
+
+.object-property-score {
+  width: 3.05em;
+  color: #22d3ee !important;
+  font-weight: 700 !important;
+  text-align: center;
+}
+
+.object-property-remove {
+  top: -.42rem;
+  right: -.34rem;
+  width: .9rem;
+  height: .9rem;
+  font-size: .64rem;
+}
+
+.object-property-add {
+  width: 1.55rem;
+  height: 1.55rem;
+  font-size: .82rem;
 }
 
 .object-property-card b {
@@ -1053,6 +1099,12 @@ body {
   .object-property-card {
     border-color: #d7e0ec;
     background: #f8fafc;
+  }
+
+  .object-property-chip input:hover,
+  .object-property-chip input:focus {
+    border-color: #bae6fd;
+    background: #e0f2fe;
   }
 
   .object-property-card > strong {

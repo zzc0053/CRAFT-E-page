@@ -360,6 +360,90 @@ document.addEventListener('DOMContentLoaded', () => {
     if (focusIndex >= 0) propertiesNode.querySelector(`[data-property-name="${focusIndex}"]`)?.focus();
   };
 
+  const renderObjectPropertyEditor = (scene, query, focusObject = -1, focusProperty = -1) => {
+    if (!objectPropertiesNode) return;
+
+    objectPropertiesNode.innerHTML = scene.objects.map((object, objectIndex) => `
+      <article class="object-property-card">
+        <strong>${escapeAttribute(object.name)}</strong>
+        <div>
+          ${(object.properties || []).map(([name, weight], propertyIndex) => `
+            <span class="object-property-chip">
+              <input class="object-property-name" type="text" maxlength="15" data-object-property-name="${objectIndex}:${propertyIndex}" value="${escapeAttribute(name)}" aria-label="${escapeAttribute(object.name)} property ${propertyIndex + 1} name" spellcheck="false" style="--name-ch:${Math.max(4, Math.min(15, name.length))}">
+              <input class="object-property-score" type="text" inputmode="decimal" data-object-property-score="${objectIndex}:${propertyIndex}" value="${escapeAttribute(weight)}" aria-label="Weight for ${escapeAttribute(object.name)} ${escapeAttribute(name)}" spellcheck="false">
+              <button class="property-remove object-property-remove" type="button" data-object-property-remove="${objectIndex}:${propertyIndex}" aria-label="Remove ${escapeAttribute(name)} from ${escapeAttribute(object.name)}">−</button>
+            </span>
+          `).join('')}
+          <button class="property-add object-property-add" type="button" data-object-property-add="${objectIndex}" aria-label="Add property to ${escapeAttribute(object.name)}" ${object.properties.length >= 5 ? 'disabled' : ''}>+</button>
+        </div>
+      </article>
+    `).join('');
+
+    objectPropertiesNode.querySelectorAll('[data-object-property-name]').forEach((input) => {
+      const [objectIndex, propertyIndex] = input.dataset.objectPropertyName.split(':').map(Number);
+      input.addEventListener('focus', () => input.select());
+      input.addEventListener('input', () => {
+        const name = input.value.slice(0, 15);
+        input.style.setProperty('--name-ch', Math.max(4, Math.min(15, name.length)));
+        scene.objects[objectIndex].properties[propertyIndex][0] = name;
+        renderInference(scene, query);
+      });
+      input.addEventListener('blur', () => {
+        const name = input.value.trim().slice(0, 15) || 'property';
+        scene.objects[objectIndex].properties[propertyIndex][0] = name;
+        input.value = name;
+        input.style.setProperty('--name-ch', Math.max(4, Math.min(15, name.length)));
+        renderInference(scene, query);
+      });
+    });
+
+    objectPropertiesNode.querySelectorAll('[data-object-property-score]').forEach((input) => {
+      const [objectIndex, propertyIndex] = input.dataset.objectPropertyScore.split(':').map(Number);
+      input.addEventListener('focus', () => input.select());
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') input.blur();
+        if (event.key === 'Escape') {
+          input.value = scene.objects[objectIndex].properties[propertyIndex][1];
+          input.blur();
+        }
+      });
+      input.addEventListener('blur', () => {
+        const property = scene.objects[objectIndex].properties[propertyIndex];
+        const parsed = Number.parseFloat(input.value);
+        const previousWeight = Number.parseFloat(property[1]);
+        const normalized = Number.isFinite(parsed) ? Math.min(1, Math.max(0, parsed)) : previousWeight;
+        const formatted = normalized.toFixed(2).replace(/^0/, '');
+        property[1] = formatted;
+        input.value = formatted;
+        renderInference(scene, query);
+      });
+    });
+
+    objectPropertiesNode.querySelectorAll('[data-object-property-remove]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const [objectIndex, propertyIndex] = button.dataset.objectPropertyRemove.split(':').map(Number);
+        scene.objects[objectIndex].properties.splice(propertyIndex, 1);
+        renderObjectPropertyEditor(scene, query);
+        renderInference(scene, query);
+      });
+    });
+
+    objectPropertiesNode.querySelectorAll('[data-object-property-add]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const objectIndex = Number(button.dataset.objectPropertyAdd);
+        const properties = scene.objects[objectIndex].properties;
+        if (properties.length >= 5) return;
+        properties.push(['property', '.50']);
+        renderObjectPropertyEditor(scene, query, objectIndex, properties.length - 1);
+        renderInference(scene, query);
+      });
+    });
+
+    if (focusObject >= 0 && focusProperty >= 0) {
+      objectPropertiesNode.querySelector(`[data-object-property-name="${focusObject}:${focusProperty}"]`)?.focus();
+    }
+  };
+
   const renderDemo = () => {
     const scene = scenes[activeScene];
     const query = scene.queries[activeQuery];
@@ -376,14 +460,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (sceneObjects) {
       sceneObjects.innerHTML = scene.objects.map((object) => `<span>${object.name}</span>`).join('');
     }
-    if (objectPropertiesNode) {
-      objectPropertiesNode.innerHTML = scene.objects.map((object) => `
-        <article class="object-property-card">
-          <strong>${object.name}</strong>
-          <div>${(object.properties || []).map(([name, weight]) => `<span>${name}<b>${weight}</b></span>`).join('')}</div>
-        </article>
-      `).join('');
-    }
+    renderObjectPropertyEditor(scene, query);
 
     roiNodes.forEach((roi, index) => {
       const object = scene.objects[index];
