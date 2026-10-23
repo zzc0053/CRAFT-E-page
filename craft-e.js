@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
       alt: 'Tabletop scene with scissors, a hair tie, and an eraser',
       objects: [
         { name: 'scissors', box: [32.1, 34.8, 15.7, 22] },
-        { name: 'hair tie', box: [54, 42, 16.3, 19.3], label: 'below' },
+        { name: 'hair tie', box: [55.5, 42.5, 14.5, 18.8] },
         { name: 'eraser', box: [43.5, 55.2, 15.2, 20.2], label: 'below' }
       ],
       queries: [
