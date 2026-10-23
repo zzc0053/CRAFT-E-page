@@ -242,6 +242,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const renderInference = (scene, query) => {
     recalculateConnectedPathScores(scene, query);
     const pathScores = new Map(query.paths.map(([name, , strength]) => [name, Number.parseFloat(strength) || 0]));
+    const objectOrder = new Map(scene.objects.map((object, index) => [object.name, index]));
+    query.costs.sort((a, b) => objectOrder.get(a[0]) - objectOrder.get(b[0]));
     query.costs.forEach((cost) => {
       const object = scene.objects.find(({ name }) => name === cost[0]);
       cost[1] = Math.round((1 - (pathScores.get(cost[0]) || 0)) * 100);
