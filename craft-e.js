@@ -26,9 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
       image: 'cut-scene-v2.jpg',
       alt: 'Tabletop scene with scissors, a destapler, and a tape measure',
       objects: [
-        { name: 'scissors', box: [49.4, 38.7, 20.4, 12.7], align: 10, grasp: 16, properties: [['sharp', '.90'], ['blade', '.90'], ['metallic', '.90'], ['hinge', '.90'], ['handle', '.80']] },
-        { name: 'destapler', box: [37.8, 52.5, 7.2, 8.3], label: 'below', align: 34, grasp: 10, properties: [['prying', '.94'], ['grip', '.88'], ['lever', '.91'], ['metallic', '.74'], ['handle', '.76']] },
-        { name: 'tape measure', box: [52.2, 57, 12.5, 16.6], label: 'below', align: 16, grasp: 32, properties: [['graduated', '.96'], ['retractable', '.90'], ['flexible', '.84'], ['portable', '.82'], ['metallic', '.32']] }
+        { name: 'scissors', box: [49.4, 38.7, 20.4, 12.7], align: 20, grasp: 31, properties: [['sharp', '.90'], ['blade', '.90'], ['metallic', '.90'], ['hinge', '.90'], ['handle', '.80']] },
+        { name: 'destapler', box: [37.8, 52.5, 7.2, 8.3], label: 'below', align: 54, grasp: 20, properties: [['prying', '.94'], ['grip', '.88'], ['lever', '.91'], ['metallic', '.74'], ['handle', '.76']] },
+        { name: 'tape measure', box: [52.2, 57, 12.5, 16.6], label: 'below', align: 31, grasp: 52, properties: [['graduated', '.96'], ['retractable', '.90'], ['flexible', '.84'], ['portable', '.82'], ['metallic', '.32']] }
       ],
       queries: [
         {
@@ -71,9 +71,9 @@ document.addEventListener('DOMContentLoaded', () => {
       image: 'tool-scene.jpg',
       alt: 'Tabletop scene with pliers, a screwdriver, and a red pen',
       objects: [
-        { name: 'pliers', box: [34.8, 37.1, 15.2, 20.6], label: 'below', align: 10, grasp: 16, properties: [['grip', '.96'], ['rotational', '.82'], ['jawed', '.95'], ['lever', '.88'], ['handle', '.84']] },
-        { name: 'screwdriver', box: [53.2, 36.5, 15.6, 22.5], label: 'below', align: 12, grasp: 12, properties: [['rotational', '.95'], ['rigid shaft', '.94'], ['fitted tip', '.91'], ['handle', '.87'], ['point', '.66']] },
-        { name: 'pen', box: [44.6, 63.6, 17.1, 4.2], label: 'below', align: 14, grasp: 28, properties: [['ink-bearing', '.97'], ['point', '.91'], ['slender', '.89'], ['handle', '.83'], ['rigid shaft', '.42']] }
+        { name: 'pliers', box: [34.8, 37.1, 15.2, 20.6], label: 'below', align: 20, grasp: 31, properties: [['grip', '.96'], ['rotational', '.82'], ['jawed', '.95'], ['lever', '.88'], ['handle', '.84']] },
+        { name: 'screwdriver', box: [53.2, 36.5, 15.6, 22.5], label: 'below', align: 27, grasp: 22, properties: [['rotational', '.95'], ['rigid shaft', '.94'], ['fitted tip', '.91'], ['handle', '.87'], ['point', '.66']] },
+        { name: 'pen', box: [44.6, 63.6, 17.1, 4.2], label: 'below', align: 34, grasp: 48, properties: [['ink-bearing', '.97'], ['point', '.91'], ['slender', '.89'], ['handle', '.83'], ['rigid shaft', '.42']] }
       ],
       queries: [
         {
@@ -116,9 +116,9 @@ document.addEventListener('DOMContentLoaded', () => {
       image: 'cut-scene.jpg',
       alt: 'Tabletop scene with scissors, a hair tie, and an eraser',
       objects: [
-        { name: 'scissors', box: [32.1, 34.8, 15.7, 22], align: 10, grasp: 16, properties: [['sharp', '.90'], ['blade', '.90'], ['metallic', '.90'], ['hinge', '.90'], ['handle', '.80']] },
-        { name: 'hair tie', box: [55.5, 42.5, 14.5, 18.8], align: 14, grasp: 34, properties: [['elastic', '.97'], ['looped', '.94'], ['flexible', '.92'], ['reusable', '.82'], ['frictional', '.54']] },
-        { name: 'eraser', box: [44.2, 55.5, 14.2, 18.8], label: 'below', align: 24, grasp: 10, properties: [['abrasive', '.94'], ['frictional', '.91'], ['residue-lifting', '.88'], ['rubber', '.96'], ['edge', '.20']] }
+        { name: 'scissors', box: [32.1, 34.8, 15.7, 22], align: 20, grasp: 31, properties: [['sharp', '.90'], ['blade', '.90'], ['metallic', '.90'], ['hinge', '.90'], ['handle', '.80']] },
+        { name: 'hair tie', box: [55.5, 42.5, 14.5, 18.8], align: 29, grasp: 54, properties: [['elastic', '.97'], ['looped', '.94'], ['flexible', '.92'], ['reusable', '.82'], ['frictional', '.54']] },
+        { name: 'eraser', box: [44.2, 55.5, 14.2, 18.8], label: 'below', align: 44, grasp: 20, properties: [['abrasive', '.94'], ['frictional', '.91'], ['residue-lifting', '.88'], ['rubber', '.96'], ['edge', '.20']] }
       ],
       queries: [
         {
