@@ -242,7 +242,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (propertiesNode) {
-      propertiesNode.innerHTML = query.properties.map(([name, weight]) => `<span>${name} <b>${weight}</b></span>`).join('');
+      propertiesNode.innerHTML = query.properties.map(([name, weight], index) => `
+        <span>${name}<input type="text" inputmode="decimal" data-property-score="${index}" value="${weight}" aria-label="Weight for ${name}" spellcheck="false"></span>
+      `).join('');
+
+      propertiesNode.querySelectorAll('[data-property-score]').forEach((input) => {
+        const index = Number(input.dataset.propertyScore);
+        const original = query.properties[index][1];
+
+        input.addEventListener('focus', () => input.select());
+        input.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter') input.blur();
+          if (event.key === 'Escape') {
+            input.value = query.properties[index][1];
+            input.blur();
+          }
+        });
+        input.addEventListener('blur', () => {
+          const parsed = Number.parseFloat(input.value);
+          const normalized = Number.isFinite(parsed) ? Math.min(1, Math.max(0, parsed)) : Number.parseFloat(original);
+          const formatted = normalized.toFixed(2).replace(/^0/, '');
+          query.properties[index][1] = formatted;
+          input.value = formatted;
+        });
+      });
     }
 
     if (objectPathsNode) {

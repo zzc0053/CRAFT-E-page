@@ -477,8 +477,34 @@ body {
   transform: translateY(5px);
 }
 
-.property-list b {
+.property-list b,
+.property-list input {
   color: #22d3ee;
+}
+
+.property-list input {
+  width: 3.15em;
+  margin-left: .28rem;
+  padding: .08rem .18rem;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  font: inherit;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  outline: none;
+}
+
+.property-list input:hover {
+  border-color: #475569;
+  background: rgba(34, 211, 238, .08);
+}
+
+.property-list input:focus {
+  border-color: #22d3ee;
+  background: rgba(34, 211, 238, .12);
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, .14);
 }
 
 .object-path-list {
@@ -841,8 +867,14 @@ body {
     color: #334155;
   }
 
-  .property-list b {
+  .property-list b,
+  .property-list input {
     color: #0284c7;
+  }
+
+  .property-list input:hover,
+  .property-list input:focus {
+    background: #e0f2fe;
   }
 
   .object-path {
