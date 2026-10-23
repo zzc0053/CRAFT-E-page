@@ -42,15 +42,15 @@ document.addEventListener('DOMContentLoaded', () => {
           note: 'sharp · aligned · graspable'
         },
         {
-          text: 'Give me something to remove a staple with.', verb: 'destaple', selected: 'destapler',
-          properties: [['prying', '.92'], ['wedge-tip', '.88'], ['levered', '.84'], ['compact', '.78']],
+          text: 'Give me something to extract with.', verb: 'extract', selected: 'destapler',
+          properties: [['prying', '.92'], ['gripping', '.87'], ['levered', '.84'], ['controlled', '.78']],
           paths: [
-            ['destapler', ['prying', 'wedge-tip', 'levered'], '.95'],
-            ['scissors', ['hinged', 'metallic'], '.31'],
-            ['tape measure', ['compact'], '.18']
+            ['destapler', ['prying', 'gripping', 'levered'], '.94'],
+            ['scissors', ['gripping', 'levered', 'controlled'], '.58'],
+            ['tape measure', ['gripping'], '.19']
           ],
-          costs: [['destapler', 10, 17, 12], ['scissors', 69, 36, 20], ['tape measure', 82, 48, 42]],
-          note: 'prying · localized · graspable'
+          costs: [['destapler', 11, 16, 12], ['scissors', 43, 31, 18], ['tape measure', 83, 52, 39]],
+          note: 'prying · controlled · graspable'
         },
         {
           text: 'Give me something to measure with.', verb: 'measure', selected: 'tape measure',
@@ -76,14 +76,25 @@ document.addEventListener('DOMContentLoaded', () => {
       ],
       queries: [
         {
-          text: 'Give me something to turn a screw with.', verb: 'turn', selected: 'screwdriver',
-          properties: [['rotational', '.93'], ['rigid shaft', '.90'], ['tip', '.87'], ['handled', '.80']],
+          text: 'Give me something to twist with.', verb: 'twist', selected: 'pliers',
+          properties: [['gripping', '.93'], ['rotational', '.89'], ['jawed', '.86'], ['levered', '.80']],
           paths: [
-            ['screwdriver', ['rotational', 'rigid shaft', 'tip'], '.95'],
-            ['pliers', ['handled', 'gripping'], '.47'],
-            ['pen', ['rigid shaft', 'tip'], '.29']
+            ['pliers', ['gripping', 'jawed', 'levered'], '.94'],
+            ['screwdriver', ['rotational', 'levered'], '.63'],
+            ['pen', ['rotational'], '.18']
           ],
-          costs: [['screwdriver', 11, 16, 18], ['pliers', 57, 24, 16], ['pen', 76, 20, 22]],
+          costs: [['pliers', 11, 18, 13], ['screwdriver', 38, 22, 17], ['pen', 86, 31, 22]],
+          note: 'jawed · rotational · graspable'
+        },
+        {
+          text: 'Give me something to tighten with.', verb: 'tighten', selected: 'screwdriver',
+          properties: [['rotational', '.94'], ['rigid shaft', '.90'], ['fitted tip', '.87'], ['handled', '.80']],
+          paths: [
+            ['screwdriver', ['rotational', 'rigid shaft', 'fitted tip'], '.96'],
+            ['pliers', ['rotational', 'handled'], '.57'],
+            ['pen', ['rigid shaft'], '.20']
+          ],
+          costs: [['screwdriver', 9, 15, 17], ['pliers', 46, 25, 14], ['pen', 84, 28, 21]],
           note: 'rotational · tip-aligned · graspable'
         },
         {
@@ -96,17 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
           ],
           costs: [['pen', 8, 14, 12], ['screwdriver', 74, 22, 18], ['pliers', 89, 28, 14]],
           note: 'ink-bearing · localized · graspable'
-        },
-        {
-          text: 'Give me something to grip with.', verb: 'grip', selected: 'pliers',
-          properties: [['jawed', '.94'], ['clamping', '.90'], ['levered', '.84'], ['handled', '.78']],
-          paths: [
-            ['pliers', ['jawed', 'clamping', 'levered'], '.96'],
-            ['screwdriver', ['handled'], '.22'],
-            ['pen', ['slender'], '.10']
-          ],
-          costs: [['pliers', 9, 18, 13], ['screwdriver', 83, 23, 16], ['pen', 92, 18, 20]],
-          note: 'jawed · clamping · graspable'
         }
       ]
     },
@@ -132,18 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
           note: 'sharp · aligned · graspable'
         },
         {
-          text: 'Give me something to erase with.', verb: 'erase', selected: 'eraser',
-          properties: [['abrasive', '.91'], ['rubber', '.89'], ['frictional', '.83'], ['handheld', '.74']],
-          paths: [
-            ['eraser', ['abrasive', 'rubber', 'frictional'], '.95'],
-            ['scissors', ['handheld'], '.16'],
-            ['hair tie', ['rubber'], '.28']
-          ],
-          costs: [['eraser', 10, 15, 18], ['hair tie', 66, 28, 31], ['scissors', 90, 22, 15]],
-          note: 'abrasive · localized · graspable'
-        },
-        {
-          text: 'Give me something to bundle cables with.', verb: 'bundle', selected: 'hair tie',
+          text: 'Give me something to bind with.', verb: 'bind', selected: 'hair tie',
           properties: [['elastic', '.94'], ['looped', '.90'], ['flexible', '.86'], ['reusable', '.73']],
           paths: [
             ['hair tie', ['elastic', 'looped', 'flexible'], '.96'],
@@ -152,6 +141,17 @@ document.addEventListener('DOMContentLoaded', () => {
           ],
           costs: [['hair tie', 9, 16, 28], ['eraser', 81, 24, 20], ['scissors', 88, 18, 14]],
           note: 'elastic · looped · retrievable'
+        },
+        {
+          text: 'Give me something to clean with.', verb: 'clean', selected: 'eraser',
+          properties: [['abrasive', '.91'], ['frictional', '.87'], ['residue-lifting', '.82'], ['handheld', '.74']],
+          paths: [
+            ['eraser', ['abrasive', 'frictional', 'residue-lifting'], '.94'],
+            ['hair tie', ['frictional', 'flexible'], '.35'],
+            ['scissors', ['handheld'], '.16']
+          ],
+          costs: [['eraser', 11, 15, 18], ['hair tie', 65, 29, 31], ['scissors', 89, 22, 15]],
+          note: 'abrasive · localized · graspable'
         }
       ]
     }
